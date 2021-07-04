@@ -1,0 +1,24 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title #{pageTitle}
+        link(rel="stylesheet", href="/css/main.css")
+        block styles
+    body 
+        header.main-header 
+            nav.main-header__nav
+                ul.main-header__item-list
+                    li.main-header__item
+                        a(
+                            href=`${config.pages.shop.fullRoute}` 
+                            class=(path === config.pages.shop.fullRoute ? config.classes.active : '')
+                        ) #{config.pages.shop.menuItem}
+                    li.main-header__item
+                        a(
+                            href=`${config.pages.addProduct.fullRoute}` 
+                            class=(path === config.pages.addProduct.fullRoute ? config.classes.active : '')
+                        ) #{config.pages.addProduct.menuItem}
+    block content

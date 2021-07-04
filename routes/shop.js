@@ -1,12 +1,16 @@
 const express = require('express');
-const helper = require('../util/helper');
 const admin = require('./admin');
 
 const router = express.Router();
+const config = require('../config');
 
 router.get('/', (req, res) => {
-    //res.sendFile(helper.getPath('views', 'shop.html'))
-    res.render('shop', { products: admin?.products, pageTitle: 'Shop' });
+    res.render(config?.pages?.shop?.view, {
+        config,
+        products: admin?.products,
+        path: config?.pages?.shop?.fullRoute,
+        pageTitle: config?.pages?.shop?.pageTitle
+    });
 });
 
 module.exports = router;
