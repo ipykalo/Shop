@@ -2,7 +2,7 @@ const express = require('express');
 const helper = require('./util/helper');
 
 const app = express();
-const admin = require('./routes/admin');
+const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const config = require('./config');
 /**
@@ -15,7 +15,7 @@ app.set('views', 'views');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(helper.getPath('public'))); //Serving static files (CSS)
 
-app.use(admin?.routes);
+app.use(adminRoutes);
 app.use(shopRoutes);
 app.use((req, res) => {
     res.status(404).render(config?.pages?.notFound?.view, {
