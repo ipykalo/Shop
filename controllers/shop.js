@@ -31,7 +31,6 @@ exports.getCart = (req, res) => {
     });
 }
 
-
 exports.getCheckout = (req, res) => {
     res.render(config?.pages?.checkout?.view, {
         config,
