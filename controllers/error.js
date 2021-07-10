@@ -1,8 +1,9 @@
 const config = require('../config');
 
-module.exports.getNoteFoundPage = (req, res) => {
+exports.getNoteFoundPage = (req, res) => {
     res.status(404).render(config?.pages?.notFound?.view, {
         config,
+        path: config?.pages?.notFound?.route,
         pageTitle: config?.pages?.notFound?.pageTitle
     });
 }

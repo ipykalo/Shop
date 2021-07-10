@@ -13,12 +13,37 @@ html(lang="en")
                 ul.main-header__item-list
                     li.main-header__item
                         a(
-                            href=`${config.pages.shop.fullRoute}` 
-                            class=(path === config.pages.shop.fullRoute ? config.classes.active : '')
+                            href=`${config.pages.shop.route}` 
+                            class=(path === config.pages.shop.route ? config.classes.active : '')
                         ) #{config.pages.shop.menuItem}
+
                     li.main-header__item
                         a(
-                            href=`${config.pages.addProduct.fullRoute}` 
-                            class=(path === config.pages.addProduct.fullRoute ? config.classes.active : '')
+                            href=`${config.pages.productList.route}` 
+                            class=(path === config.pages.productList.route ? config.classes.active : '')
+                        ) #{config.pages.productList.menuItem}
+
+                    li.main-header__item
+                        a(
+                            href=`${config.pages.cart.route}` 
+                            class=(path === config.pages.cart.route ? config.classes.active : '')
+                        ) #{config.pages.cart.menuItem}
+
+                    li.main-header__item
+                        a(
+                            href=`${config.pages.orders.route}` 
+                            class=(path === config.pages.orders.route ? config.classes.active : '')
+                        ) #{config.pages.orders.menuItem}    
+
+                    li.main-header__item
+                        a(
+                            href=`${config.pages.addProduct.route}` 
+                            class=(path === config.pages.addProduct.route ? config.classes.active : '')
                         ) #{config.pages.addProduct.menuItem}
+
+                    li.main-header__item
+                        a(
+                            href=`${config.pages.products.route}` 
+                            class=(path === config.pages.products.route ? config.classes.active : '')
+                        ) #{config.pages.products.menuItem}    
     block content
