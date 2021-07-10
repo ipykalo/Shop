@@ -4,7 +4,7 @@ const helper = require('./util/helper');
 const app = express();
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
-const config = require('./config');
+const errorController = require('./controllers/error');
 /**
  * Dynamic templating engin (pug) configuration
  * To render file use this res.render('shop')
@@ -17,11 +17,6 @@ app.use(express.static(helper.getPath('public'))); //Serving static files (CSS)
 
 app.use(adminRoutes);
 app.use(shopRoutes);
-app.use((req, res) => {
-    res.status(404).render(config?.pages?.notFound?.view, {
-        config,
-        pageTitle: config?.pages?.notFound?.pageTitle
-    });
-});
+app.use(errorController.getNoteFoundPage);
 
 app.listen(3000, () => console.log("Server is runing!"));

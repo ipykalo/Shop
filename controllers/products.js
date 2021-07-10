@@ -1,7 +1,7 @@
 const config = require('../config');
-const products = [];
+const Product = require('../models/product');
 
-module.exports.getAddProduct = (req, res) => {
+module.exports.getCreateProductForm = (req, res) => {
     res.render(config?.pages?.addProduct?.view, {
         config,
         path: config?.pages?.addProduct?.fullRoute,
@@ -9,16 +9,19 @@ module.exports.getAddProduct = (req, res) => {
     });
 }
 
-module.exports.postAddProduct = (req, res) => {
-    products.push({ title: req.body.title });
+module.exports.createProduct = (req, res) => {
+    const product = new Product(req.body.title);
+    product.save();
     res.redirect('/');
 }
 
 module.exports.getProducts = (req, res) => {
-    res.render(config?.pages?.shop?.view, {
-        config,
-        products: products,
-        path: config?.pages?.shop?.fullRoute,
-        pageTitle: config?.pages?.shop?.pageTitle
-    });
+    Product.fetchAll((products => {
+        res.render(config?.pages?.shop?.view, {
+            config,
+            products: products,
+            path: config?.pages?.shop?.fullRoute,
+            pageTitle: config?.pages?.shop?.pageTitle
+        });
+    }));
 }
