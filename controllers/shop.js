@@ -12,6 +12,17 @@ exports.getProducts = (req, res) => {
     }));
 }
 
+exports.getProduct = (req, res) => {
+    Product.getProduct(req?.params?.id, (product => {
+        res.render(config?.pages?.productDetail?.view, {
+            config,
+            product,
+            path: config?.routes.PRODUCTS,
+            pageTitle: config?.pages?.productDetail?.pageTitle
+        });
+    }));
+}
+
 exports.getIndex = (req, res) => {
     Product.fetchAll((products => {
         res.render(config?.pages?.index?.view, {

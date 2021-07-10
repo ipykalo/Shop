@@ -13,6 +13,7 @@ module.exports = class Product {
     save() {
         try {
             const path = helper.getPath('data', 'products.json');
+            this.id = Math.random().toString();
             fs.readFile(path, (error, fileContent) => {
                 if (error) {
                     console.log(error);
@@ -35,11 +36,29 @@ module.exports = class Product {
             const path = helper.getPath('data', 'products.json');
             fs.readFile(path, (error, fileContent) => {
                 if (error || !fileContent?.length) {
-                    cb([]);
-                    return;
+                    return cb([]);
                 }
                 const products = JSON.parse(fileContent);
                 cb(products);
+            });
+        } catch (err) {
+            console.log(err);
+            cb([]);
+        }
+    }
+
+    static getProduct(id, cb) {
+        if (!id || typeof cb !== 'function') {
+            return;
+        }
+        try {
+            const path = helper.getPath('data', 'products.json');
+            fs.readFile(path, (error, fileContent) => {
+                if (error || !fileContent?.length) {
+                    return cb({});
+                }
+                const product = JSON.parse(fileContent)?.find(item => item?.id === id);
+                cb(product || {});
             });
         } catch (err) {
             console.log(err);

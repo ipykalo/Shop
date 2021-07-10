@@ -2,6 +2,7 @@ const ROUTES = {
     INDEX: '/',
     PRODUCTS: '/products',
     PRODUCT_DETAIL: '/product-detail',
+    PRODUCT_DETAIL_ID: '/product-detail/:id',
     CHECKOUT: '/checkout',
     CART: '/cart',
     ORDERS: '/orders',
@@ -32,7 +33,7 @@ const PAGES = {
         pageTitle: 'Shop',
         menuItem: 'Product Detail',
         image: '',
-        route: ROUTES.PRODUCT_DETAIL
+        route: ROUTES.PRODUCT_DETAIL_ID
     },
     checkout: {
         view: 'shop/checkout',

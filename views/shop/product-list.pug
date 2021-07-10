@@ -17,6 +17,8 @@ block content
                             h2.product__price #{product.price}$
                             p.product__description #{product.description}
                         div.card__actions
+                            div 
+                                a(href=`${config.routes.PRODUCT_DETAIL}/${product.id}`) Product Detail
                             form(action=`${config.routes.ADD_TO_CART}`, method="POST")
                                 button.btn Add to Cart 
         else 

@@ -1,4 +1,16 @@
 extends ../layouts/main.pug
 
+
+block styles 
+    link(rel="stylesheet", href="/css/product-detail.css")
+
 block content 
-    h1 Product Detail
+    main.centered 
+        h1 #{product.title}
+        hr
+        div 
+            img(src=`${product.imageUrl}`, alt=`${product.title}`)
+        h2 #{product.price}$    
+        p #{product.description}
+        form(action=`${config.routes.ADD_TO_CART}`, method="POST") 
+            button.btn(type="submit") Add To Card
