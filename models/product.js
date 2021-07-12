@@ -28,10 +28,33 @@ module.exports = class Product {
         }
     }
 
-    static fetchAll(cb) {
-        if (typeof cb !== 'function') {
-            return;
+    static update(product, cb = () => { }) {
+        try {
+            const path = helper.getPath('data', 'products.json');
+            fs.readFile(path, (error, fileContent) => {
+                if (error || !fileContent?.length) {
+                    return cb(null);
+                }
+                const products = JSON.parse(fileContent);
+                const index = products?.findIndex(pr => pr?.id === product?.id);
+                if (index === -1) {
+                    cb(null);
+                }
+                products[index] = product;
+                fs.writeFile(path, JSON.stringify(products), err => {
+                    if (!err) {
+                        cb(product);
+                    }
+                    cb(null);
+                });
+            });
+        } catch (err) {
+            console.log(err);
+            cb(null);
         }
+    }
+
+    static fetchAll(cb = () => { }) {
         try {
             const path = helper.getPath('data', 'products.json');
             fs.readFile(path, (error, fileContent) => {
@@ -47,10 +70,7 @@ module.exports = class Product {
         }
     }
 
-    static getProduct(id, cb) {
-        if (!id || typeof cb !== 'function') {
-            return;
-        }
+    static getProduct(id, cb = () => { }) {
         try {
             const path = helper.getPath('data', 'products.json');
             fs.readFile(path, (error, fileContent) => {

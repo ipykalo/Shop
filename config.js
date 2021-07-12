@@ -10,6 +10,7 @@ const ROUTES = {
     ADMIN_PRODUCTS: '/admin/products',
     ADMIN_ADD_PRODUCT: '/admin/add-product',
     ADMIN_EDIT_PRODUCT: '/admin/edit-product',
+    ADMIN_EDIT_PRODUCT_ID: '/admin/edit-product/:id',
     ADMIN_DELETE_PRODUCT: '/admin/delete-product'
 }
 

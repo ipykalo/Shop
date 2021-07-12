@@ -12,5 +12,4 @@ block content
             img(src=`${product.imageUrl}`, alt=`${product.title}`)
         h2 #{product.price}$    
         p #{product.description}
-        form(action=`${config.routes.ADD_TO_CART}`, method="POST") 
-            button.btn(type="submit") Add To Card
+        include ../includes/add-to-card.pug

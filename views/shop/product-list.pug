@@ -19,7 +19,6 @@ block content
                         div.card__actions
                             div 
                                 a(href=`${config.routes.PRODUCT_DETAIL}/${product.id}`) Product Detail
-                            form(action=`${config.routes.ADD_TO_CART}`, method="POST")
-                                button.btn Add to Cart 
+                                include ../includes/add-to-card.pug
         else 
             h1 No Products!
