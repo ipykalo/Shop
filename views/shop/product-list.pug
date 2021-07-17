@@ -1,0 +1,24 @@
+extends ../layouts/main.pug
+
+block styles 
+    link(rel="stylesheet", href="/css/product.css")
+
+block content 
+    main
+        if products.length > 0
+            div.grid
+                each product in products
+                    article.card.product-item
+                        header.card__header
+                            h1.product__title #{product.title}
+                        div.card__image
+                            img(src=`${product.imageUrl}` alt="Book")
+                        div.card__content
+                            h2.product__price #{product.price}$
+                            p.product__description #{product.description}
+                        div.card__actions
+                            div.flex-row-center 
+                                a.btn(href=`${config.routes.PRODUCT_DETAIL}/${product.id}`) Product Detail
+                                include ../includes/add-to-card.pug
+        else 
+            h1 No Products!

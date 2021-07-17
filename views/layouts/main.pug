@@ -1,0 +1,49 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title #{pageTitle}
+        link(rel="stylesheet", href="/css/main.css")
+        block styles
+    body 
+        header.main-header 
+            nav.main-header__nav
+                ul.main-header__item-list
+                    li.main-header__item
+                        a(
+                            href=`${config.pages.shop.route}` 
+                            class=(path === config.pages.shop.route ? config.classes.active : '')
+                        ) #{config.pages.shop.menuItem}
+
+                    li.main-header__item
+                        a(
+                            href=`${config.pages.productList.route}` 
+                            class=(path === config.pages.productList.route ? config.classes.active : '')
+                        ) #{config.pages.productList.menuItem}
+
+                    li.main-header__item
+                        a(
+                            href=`${config.pages.cart.route}` 
+                            class=(path === config.pages.cart.route ? config.classes.active : '')
+                        ) #{config.pages.cart.menuItem}
+
+                    li.main-header__item
+                        a(
+                            href=`${config.pages.orders.route}` 
+                            class=(path === config.pages.orders.route ? config.classes.active : '')
+                        ) #{config.pages.orders.menuItem}    
+
+                    li.main-header__item
+                        a(
+                            href=`${config.pages.addProduct.route}` 
+                            class=(path === config.pages.addProduct.route ? config.classes.active : '')
+                        ) #{config.pages.addProduct.menuItem}
+
+                    li.main-header__item
+                        a(
+                            href=`${config.pages.products.route}` 
+                            class=(path === config.pages.products.route ? config.classes.active : '')
+                        ) #{config.pages.products.menuItem}    
+    block content

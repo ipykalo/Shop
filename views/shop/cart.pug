@@ -1,0 +1,14 @@
+extends ../layouts/main.pug
+
+block content 
+    main
+        if products.length > 0
+            each product in products
+                ul 
+                    li 
+                        p #{product.title} (#{product.quantity})
+                        form(action=`${config.routes.DELETE_FROM_CART}`, method="post")
+                            input(type="hidden" name="id" value=`${product.id}`)
+                            button.btn.cart Delete
+        else 
+            h1 No Products in the Cart   

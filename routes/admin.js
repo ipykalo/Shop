@@ -1,12 +1,19 @@
 const express = require('express');
-const helper = require('../util/helper');
-
 const router = express.Router();
 
-router.get('/add-product', (req, res) => res.sendFile(helper.getPath('views', 'add-product.html')));
+const adminController = require('../controllers/admin');
+const routes = require('../config')?.routes;
 
-router.post('/add-product', (req, res) => {
-    res.redirect('/');
-});
+router.get(routes.ADMIN_ADD_PRODUCT, adminController.getCreateProductForm);
+
+router.post(routes.ADMIN_ADD_PRODUCT, adminController.createProduct);
+
+router.get(routes.ADMIN_EDIT_PRODUCT_ID, adminController.editProduct);
+
+router.post(routes.ADMIN_EDIT_PRODUCT, adminController.updateProduct);
+
+router.get(routes.ADMIN_PRODUCTS, adminController.getProducts);
+
+router.get(routes.ADMIN_DELETE_PRODUCT_ID, adminController.deleteProduct)
 
 module.exports = router;
