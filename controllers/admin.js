@@ -16,7 +16,7 @@ exports.createProduct = (req, res) => {
         description: req?.body?.description,
         price: req?.body?.price
     });
-    product.save();
+    product.create();
     res.redirect(config.routes.INDEX);
 }
 
@@ -43,6 +43,15 @@ exports.updateProduct = (req, res) => {
             return res.redirect(config.routes.ADMIN_PRODUCTS);
         }
         res.send(500, 'Can\'t Update Product');
+    });
+}
+
+exports.deleteProduct = (req, res) => {
+    Product.delete(req?.params?.id, id => {
+        if (id) {
+            return res.redirect(config.routes.ADMIN_PRODUCTS);
+        }
+        res.send(500, 'Can\'t Delete Product');
     });
 }
 

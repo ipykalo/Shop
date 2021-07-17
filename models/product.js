@@ -1,5 +1,6 @@
 const fs = require('fs');
 const helper = require('../util/helper');
+const Cart = require('../models/cart');
 
 module.exports = class Product {
 
@@ -10,7 +11,7 @@ module.exports = class Product {
         this.price = price
     }
 
-    save() {
+    create() {
         try {
             const path = helper.getPath('data', 'products.json');
             this.id = Math.random().toString();
@@ -21,6 +22,7 @@ module.exports = class Product {
                 }
                 const fetchedProducts = !fileContent?.length ? [] : JSON.parse(fileContent);
                 fetchedProducts.push(this);
+
                 fs.writeFile(path, JSON.stringify(fetchedProducts), (err) => console.log(err));
             });
         } catch (err) {
@@ -28,7 +30,10 @@ module.exports = class Product {
         }
     }
 
-    static update(product, cb = () => { }) {
+    static update(product, cb) {
+        if (typeof cb !== 'function') {
+            return;
+        }
         try {
             const path = helper.getPath('data', 'products.json');
             fs.readFile(path, (error, fileContent) => {
@@ -38,12 +43,13 @@ module.exports = class Product {
                 const products = JSON.parse(fileContent);
                 const index = products?.findIndex(pr => pr?.id === product?.id);
                 if (index === -1) {
-                    cb(null);
+                    return cb(null);
                 }
                 products[index] = product;
+                
                 fs.writeFile(path, JSON.stringify(products), err => {
                     if (!err) {
-                        cb(product);
+                        return cb(product);
                     }
                     cb(null);
                 });
@@ -54,15 +60,45 @@ module.exports = class Product {
         }
     }
 
-    static fetchAll(cb = () => { }) {
+    static delete(id, cb) {
+        if (typeof cb !== 'function') {
+            return;
+        }
+        try {
+            const path = helper.getPath('data', 'products.json');
+            fs.readFile(path, (error, fileContent) => {
+                if (error || !fileContent?.length) {
+                    return cb(null);
+                }
+                const products = JSON.parse(fileContent);
+                const product = products.find(pr => pr.id === id);
+                product && Cart.deleteProduct(id, product.price);
+                const filteredProducts = products?.filter(pr => pr?.id !== id);
+
+                fs.writeFile(path, JSON.stringify(filteredProducts), err => {
+                    if (!err) {
+                        return cb(id);
+                    }
+                    cb(null);
+                });
+            });
+        } catch (err) {
+            console.log(err);
+            cb(null);
+        }
+    }
+
+    static fetchAll(cb) {
+        if (typeof cb !== 'function') {
+            return;
+        }
         try {
             const path = helper.getPath('data', 'products.json');
             fs.readFile(path, (error, fileContent) => {
                 if (error || !fileContent?.length) {
                     return cb([]);
                 }
-                const products = JSON.parse(fileContent);
-                cb(products);
+                cb(JSON.parse(fileContent));
             });
         } catch (err) {
             console.log(err);
@@ -70,7 +106,10 @@ module.exports = class Product {
         }
     }
 
-    static getProduct(id, cb = () => { }) {
+    static getProduct(id, cb) {
+        if (typeof cb !== 'function') {
+            return;
+        }
         try {
             const path = helper.getPath('data', 'products.json');
             fs.readFile(path, (error, fileContent) => {

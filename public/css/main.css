@@ -103,10 +103,25 @@ main {
   background: white;
   border-radius: 3px;
   cursor: pointer;
+  padding: 5px 10px;
+}
+
+button.cart {
+  padding: 2px;
 }
 
 .btn:hover,
 .btn:active {
   background-color: #00695c;
   color: white;
+}
+
+a {
+  text-decoration: none;
+}
+
+.flex-row-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }

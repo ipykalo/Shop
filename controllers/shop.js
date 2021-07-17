@@ -25,28 +25,52 @@ exports.getProduct = (req, res) => {
 }
 
 exports.getIndex = (req, res) => {
-    Product.fetchAll((products => {
+    Product.fetchAll(products => {
         res.render(config?.pages?.index?.view, {
             config,
             products: products,
             path: config?.pages?.index?.route,
             pageTitle: config?.pages?.index?.pageTitle
         });
-    }));
+    });
 }
 
 exports.getCart = (req, res) => {
-    res.render(config?.pages?.cart?.view, {
+    const render = {
         config,
+        products: [],
         path: config?.pages?.cart?.route,
         pageTitle: config?.pages?.cart?.pageTitle
+    }
+    Cart.getCart(cart => {
+        if (!cart || !cart.products.length) {
+            return res.render(config?.pages?.cart?.view, render);
+        }
+        Product.fetchAll(products => {
+            const filtered = [];
+            cart.products.forEach(item => {
+                products.forEach(pr => {
+                    if (pr.id === item.id) {
+                        filtered.push({ ...pr, quantity: item.quantity })
+                    }
+                });
+            });
+            render.products = filtered;
+            res.render(config?.pages?.cart?.view, render);
+        });
     });
 }
 
 exports.addToCart = (req, res) => {
-    const id = req?.body?.id;
-    Product.getProduct(id, product => {
-        Cart.addProduct(id, product?.price);
+    Product.getProduct(req?.body?.id, product => {
+        Cart.add(req?.body?.id, product?.price);
+        res.redirect(config.routes.CART);
+    });
+}
+
+exports.deleteFromCart = (req, res) => {
+    Product.getProduct(req?.body?.id, product => {
+        Cart.delete(req?.body?.id, product?.price);
         res.redirect(config.routes.CART);
     });
 }

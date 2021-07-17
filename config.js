@@ -7,11 +7,13 @@ const ROUTES = {
     CART: '/cart',
     ORDERS: '/orders',
     ADD_TO_CART: '/add-to-cart',
+    DELETE_FROM_CART: '/delete-from-cart',
     ADMIN_PRODUCTS: '/admin/products',
     ADMIN_ADD_PRODUCT: '/admin/add-product',
     ADMIN_EDIT_PRODUCT: '/admin/edit-product',
     ADMIN_EDIT_PRODUCT_ID: '/admin/edit-product/:id',
-    ADMIN_DELETE_PRODUCT: '/admin/delete-product'
+    ADMIN_DELETE_PRODUCT: '/admin/delete-product',
+    ADMIN_DELETE_PRODUCT_ID: '/admin/delete-product/:id'
 }
 
 const PAGES = {
