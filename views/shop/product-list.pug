@@ -18,7 +18,7 @@ block content
                             p.product__description #{product.description}
                         div.card__actions
                             div.flex-row-center 
-                                a.btn(href=`${config.routes.PRODUCT_DETAIL}/${product.id}`) Product Detail
+                                a.btn(href=`${config.routes.PRODUCT_DETAIL}/${product.productID}`) Product Detail
                                 include ../includes/add-to-card.pug
         else 
             h1 No Products!

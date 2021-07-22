@@ -3,76 +3,77 @@ const Product = require('../models/product');
 const Cart = require('../models/cart');
 
 exports.getProducts = (req, res) => {
-    Product.fetchAll((products => {
-        res.render(config?.pages?.productList?.view, {
-            config,
-            products: products,
-            path: config?.pages?.productList?.route,
-            pageTitle: config?.pages?.productList?.pageTitle
-        });
-    }));
+    Product.fetchAll()
+        .then(([rows]) => {
+            if (rows) {
+                res.render(config?.pages?.productList?.view, {
+                    config,
+                    products: rows,
+                    path: config?.pages?.productList?.route,
+                    pageTitle: config?.pages?.productList?.pageTitle
+                });
+            }
+        })
+        .catch(err => console.log(err, 'getProducts'));
 }
 
 exports.getProduct = (req, res) => {
-    Product.getProduct(req?.params?.id, (product => {
-        res.render(config?.pages?.productDetail?.view, {
-            config,
-            product,
-            path: config?.routes.PRODUCTS,
-            pageTitle: config?.pages?.productDetail?.pageTitle
-        });
-    }));
+    Product.getProduct(req.params.id)
+        .then(([rows]) => {
+            res.render(config?.pages?.productDetail?.view, {
+                config,
+                product: rows[0],
+                path: config?.routes.PRODUCTS,
+                pageTitle: config?.pages?.productDetail?.pageTitle
+            });
+        })
+        .catch(err => console.log(err, 'getProduct'));
 }
 
 exports.getIndex = (req, res) => {
-    Product.fetchAll(products => {
-        res.render(config?.pages?.index?.view, {
-            config,
-            products: products,
-            path: config?.pages?.index?.route,
-            pageTitle: config?.pages?.index?.pageTitle
-        });
-    });
+    Product.fetchAll()
+        .then(([rows]) => {
+            if (rows) {
+                res.render(config?.pages?.index?.view, {
+                    config,
+                    products: rows,
+                    path: config?.pages?.index?.route,
+                    pageTitle: config?.pages?.index?.pageTitle
+                });
+            }
+        })
+        .catch(err => console.log(err, 'getIndex'));
 }
 
 exports.getCart = (req, res) => {
-    const render = {
-        config,
-        products: [],
-        path: config?.pages?.cart?.route,
-        pageTitle: config?.pages?.cart?.pageTitle
-    }
-    Cart.getCart(cart => {
-        if (!cart || !cart.products.length) {
-            return res.render(config?.pages?.cart?.view, render);
-        }
-        Product.fetchAll(products => {
-            const filtered = [];
-            cart.products.forEach(item => {
-                products.forEach(pr => {
-                    if (pr.id === item.id) {
-                        filtered.push({ ...pr, quantity: item.quantity })
-                    }
-                });
+    Cart.getCart()
+        .then(cart => {
+            res.render(config?.pages?.cart?.view, {
+                config,
+                products: cart.products,
+                path: config?.pages?.cart?.route,
+                pageTitle: config?.pages?.cart?.pageTitle
             });
-            render.products = filtered;
-            res.render(config?.pages?.cart?.view, render);
-        });
-    });
+        })
+        .catch(err => console.log(err, 'getcart'));
 }
 
 exports.addToCart = (req, res) => {
-    Product.getProduct(req?.body?.id, product => {
-        Cart.add(req?.body?.id, product?.price);
-        res.redirect(config.routes.CART);
-    });
+    Product.getProduct(req.body.id)
+        .then(([rows]) => {
+            Cart.add(req?.body?.id, rows[0]?.price);
+            res.redirect(config.routes.CART);
+        })
+        .catch(err => console.log(err, 'getProduct'));
 }
 
 exports.deleteFromCart = (req, res) => {
-    Product.getProduct(req?.body?.id, product => {
-        Cart.delete(req?.body?.id, product?.price);
-        res.redirect(config.routes.CART);
-    });
+    Product.getProduct(req.body.id)
+        .then(([rows]) => {
+            Cart.delete(req?.body?.id, rows[0]?.price);
+            res.redirect(config.routes.CART);
+        })
+        .catch(err => console.log(err, 'deleteFromCart'));
 }
 
 exports.getCheckout = (req, res) => {

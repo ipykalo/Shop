@@ -1,5 +1,6 @@
 const fs = require('fs');
 const helper = require('../util/helper');
+const db = require('../util/db');
 
 module.exports = class Cart {
     static add(id, price) {
@@ -83,20 +84,24 @@ module.exports = class Cart {
         }
     }
 
-    static getCart(cb) {
-        if (typeof cb !== 'function') {
-            return;
-        }
-        try {
-            const path = helper.getPath('data', 'cart.json');
-            fs.readFile(path, (error, cartData) => {
-                if (error) {
-                    return cb(null);
+    static getCart() {
+        return db.query('SELECT * FROM products INNER JOIN cart ON products.productID = cart.productID')
+            .then(([rows]) => {
+                const cart = { products: [], totalPrice: 0 };
+                if (!rows?.length) {
+                    return cart;
                 }
-                cb(JSON.parse(cartData));
+                return rows?.reduce((acc, current) => {
+                    const index = acc.products.findIndex(pr => pr.productID === current.productID);
+                    if (index === -1) {
+                        acc.totalPrice += current.price;
+                        acc.products.push({ ...current, quantity: 1 });
+                        return acc;
+                    }
+                    acc.products[index].quantity += 1;
+                    acc.totalPrice += current.price;
+                    return acc;
+                }, cart);
             });
-        } catch (err) {
-            console.log(err);
-        }
     }
 }
