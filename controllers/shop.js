@@ -3,26 +3,24 @@ const Product = require('../models/product');
 const Cart = require('../models/cart');
 
 exports.getProducts = (req, res) => {
-    Product.fetchAll()
-        .then(([rows]) => {
-            if (rows) {
-                res.render(config?.pages?.productList?.view, {
-                    config,
-                    products: rows,
-                    path: config?.pages?.productList?.route,
-                    pageTitle: config?.pages?.productList?.pageTitle
-                });
-            }
+    req.user.getProducts()
+        .then(products => {
+            res.render(config?.pages?.productList?.view, {
+                config,
+                products: products,
+                path: config?.pages?.productList?.route,
+                pageTitle: config?.pages?.productList?.pageTitle
+            });
         })
         .catch(err => console.log(err, 'getProducts'));
 }
 
 exports.getProduct = (req, res) => {
-    Product.getProduct(req.params.id)
-        .then(([rows]) => {
+    req.user.getProducts({ where: { productID: req.params.id } })
+        .then(products => {
             res.render(config?.pages?.productDetail?.view, {
                 config,
-                product: rows[0],
+                product: products[0],
                 path: config?.routes.PRODUCTS,
                 pageTitle: config?.pages?.productDetail?.pageTitle
             });
@@ -31,18 +29,16 @@ exports.getProduct = (req, res) => {
 }
 
 exports.getIndex = (req, res) => {
-    Product.fetchAll()
-        .then(([rows]) => {
-            if (rows) {
-                res.render(config?.pages?.index?.view, {
-                    config,
-                    products: rows,
-                    path: config?.pages?.index?.route,
-                    pageTitle: config?.pages?.index?.pageTitle
-                });
-            }
+    req.user.getProducts()
+        .then(products => {
+            res.render(config?.pages?.index?.view, {
+                config,
+                products: products,
+                path: config?.pages?.index?.route,
+                pageTitle: config?.pages?.index?.pageTitle
+            });
         })
-        .catch(err => console.log(err, 'getIndex'));
+        .catch(err => console.log(err, 'getProducts'));
 }
 
 exports.getCart = (req, res) => {
