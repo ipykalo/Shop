@@ -125,3 +125,7 @@ a {
   flex-direction: row;
   justify-content: center;
 }
+
+p {
+  word-break: break-word;
+}
