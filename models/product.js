@@ -25,8 +25,10 @@ module.exports = class Product {
     }
 
     static delete(id) {
-        //TODO Delete product from Cart
-        return db.query('DELETE from products WHERE productID = ?', [id]);
+        return Promise.all([
+            db.query('DELETE from products WHERE productID = ?', [id]),
+            Cart.deleteProduct(id)
+        ]);
     }
 
     static fetchAll() {

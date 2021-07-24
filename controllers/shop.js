@@ -59,20 +59,14 @@ exports.getCart = (req, res) => {
 }
 
 exports.addToCart = (req, res) => {
-    Product.getProduct(req.body.id)
-        .then(([rows]) => {
-            Cart.add(req?.body?.id, rows[0]?.price);
-            res.redirect(config.routes.CART);
-        })
+    Cart.add(req?.body?.id)
+        .then(() => res.redirect(config.routes.CART))
         .catch(err => console.log(err, 'getProduct'));
 }
 
 exports.deleteFromCart = (req, res) => {
-    Product.getProduct(req.body.id)
-        .then(([rows]) => {
-            Cart.delete(req?.body?.id, rows[0]?.price);
-            res.redirect(config.routes.CART);
-        })
+    Cart.delete(req?.body?.id)
+        .then(() => res.redirect(config.routes.CART))
         .catch(err => console.log(err, 'deleteFromCart'));
 }
 
