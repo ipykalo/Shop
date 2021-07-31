@@ -6,9 +6,9 @@ block content
             each product in products
                 ul 
                     li 
-                        p #{product.title} (#{product.quantity})
+                        p #{product.title} (#{product.cartProduct.quantity})
                         form(action=`${config.routes.DELETE_FROM_CART}`, method="post")
-                            input(type="hidden" name="id" value=`${product.productID}`)
+                            input(type="hidden" name="id" value=`${product.id}`)
                             button.btn.cart Delete
         else 
             h1 No Products in the Cart   

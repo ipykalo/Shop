@@ -21,7 +21,7 @@ exports.createProduct = (req, res) => {
 }
 
 exports.editProduct = (req, res) => {
-    req.user.getProducts({ where: { productID: req.params.id } })
+    req.user.getProducts({ where: { id: req.params.id } })
         .then(products => {
             res.render(config?.pages?.editProduct?.view, {
                 config,
@@ -40,14 +40,14 @@ exports.updateProduct = (req, res) => {
         imageUrl: req?.body?.imageUrl,
         description: req?.body?.description
     }, {
-        where: { productID: req.body.id }
+        where: { id: req.body.id }
     })
         .then(() => res.redirect(config.routes.ADMIN_PRODUCTS))
         .catch(err => console.log(err, 'updateProduct'));
 }
 
 exports.deleteProduct = (req, res) => {
-    Product.destroy({ where: { productID: req.params.id } })
+    Product.destroy({ where: { id: req.params.id } })
         .then(() => res.redirect(config.routes.ADMIN_PRODUCTS))
         .catch(err => console.log(err, 'deleteProduct'));
 }

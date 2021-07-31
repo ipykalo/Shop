@@ -3,6 +3,8 @@ const helper = require('./util/helper');
 const sequelize = require('./util/db');
 const Product = require('./models/product');
 const User = require('./models/user');
+const Cart = require('./models/cart');
+const CartProduct = require('./models/cart-product');
 
 const app = express();
 const adminRoutes = require('./routes/admin');
@@ -35,9 +37,11 @@ app.use(errorController.getNoteFoundPage);
  */
 User.hasMany(Product, {
     constraints: true,
-    onDelete: 'CASCADE',
-    foreignKey: 'userID'
+    onDelete: 'CASCADE'
 });
+User.hasOne(Cart);
+Cart.belongsToMany(Product, { through: CartProduct });
+Product.belongsToMany(Cart, { through: CartProduct });
 
 sequelize.sync()
     //sequelize.sync({ force: true })
@@ -46,6 +50,7 @@ sequelize.sync()
         if (!user) {
             //TODO delete this code after implementing authentification
             return User.create({ name: 'Ivan', email: 'ivan@test.com' })
+                .then(createdUser => createdUser.createCart())
         }
         return user;
     })

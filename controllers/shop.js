@@ -1,6 +1,5 @@
 const config = require('../config');
 const Product = require('../models/product');
-const Cart = require('../models/cart');
 
 exports.getProducts = (req, res) => {
     req.user.getProducts()
@@ -16,7 +15,7 @@ exports.getProducts = (req, res) => {
 }
 
 exports.getProduct = (req, res) => {
-    req.user.getProducts({ where: { productID: req.params.id } })
+    req.user.getProducts({ where: { id: req.params.id } })
         .then(products => {
             res.render(config?.pages?.productDetail?.view, {
                 config,
@@ -42,26 +41,41 @@ exports.getIndex = (req, res) => {
 }
 
 exports.getCart = (req, res) => {
-    Cart.getCart()
-        .then(cart => {
+    req.user.getCart()
+        .then(cart => cart.getProducts())
+        .then(products => {
             res.render(config?.pages?.cart?.view, {
                 config,
-                products: cart.products,
+                products: products,
                 path: config?.pages?.cart?.route,
                 pageTitle: config?.pages?.cart?.pageTitle
             });
         })
-        .catch(err => console.log(err, 'getcart'));
+        .catch(err => console.log(err, 'getCart'))
 }
 
 exports.addToCart = (req, res) => {
-    Cart.add(req?.body?.id)
+    let cart;
+    req.user.getCart()
+        .then(fetchedCart => {
+            cart = fetchedCart;
+            return fetchedCart.getProducts({ where: { id: req?.body?.id } });
+        })
+        .then(([product]) => product ? product : Product.findByPk(req?.body?.id))
+        .then(product => {
+            const quantity = product?.cartProduct ? product.cartProduct.quantity + 1 : 1;
+            return cart.addProduct(product, { through: { quantity } });
+        })
         .then(() => res.redirect(config.routes.CART))
-        .catch(err => console.log(err, 'getProduct'));
+        .catch(err => console.log(err, 'addToCart'));
 }
 
 exports.deleteFromCart = (req, res) => {
-    Cart.delete(req?.body?.id)
+    req.user.getCart()
+        .then(fetchedCart => {
+            return fetchedCart.getProducts({ where: { id: req?.body?.id } });
+        })
+        .then(([product]) => product ? product.cartProduct.destroy() : null)
         .then(() => res.redirect(config.routes.CART))
         .catch(err => console.log(err, 'deleteFromCart'));
 }
