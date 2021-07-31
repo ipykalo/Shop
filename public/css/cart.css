@@ -11,6 +11,7 @@ li.cart {
     background-color: #076c623d;
     border-radius: 10px;
     padding: 0 10px;
+    box-shadow: 5px 5px 10px #008000a6;
 }
 
 p {
