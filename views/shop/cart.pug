@@ -1,11 +1,14 @@
 extends ../layouts/main.pug
 
+block styles 
+    link(rel="stylesheet", href="/css/cart.css")
+
 block content 
     main
         if products.length > 0
             each product in products
                 ul 
-                    li 
+                    li.cart
                         p #{product.title} (#{product.cartProduct.quantity})
                         form(action=`${config.routes.DELETE_FROM_CART}`, method="post")
                             input(type="hidden" name="id" value=`${product.id}`)
