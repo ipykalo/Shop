@@ -12,6 +12,9 @@ block content
                         p #{product.title} (#{product.cartProduct.quantity})
                         form(action=`${config.routes.DELETE_FROM_CART}`, method="post")
                             input(type="hidden" name="id" value=`${product.id}`)
-                            button.btn.cart Delete
+                            button.btn.cart Delete  
+                hr                    
+                form(action=`${config.routes.CREATE_ORDER}`, method="post")
+                    button.btn(type="submit") Create Order                               
         else 
             h1 No Products in the Cart   

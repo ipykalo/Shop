@@ -89,9 +89,37 @@ exports.getCheckout = (req, res) => {
 }
 
 exports.getOrders = (req, res) => {
-    res.render(config?.pages?.orders?.view, {
-        config,
-        path: config?.pages?.orders?.route,
-        pageTitle: config?.pages?.orders?.pageTitle
-    });
+    req.user.getOrders({ include: 'products' })
+        .then(orders => {
+            res.render(config?.pages?.orders?.view, {
+                config,
+                orders,
+                path: config?.pages?.orders?.route,
+                pageTitle: config?.pages?.orders?.pageTitle
+            });
+        })
+        .catch(err => console.log(err, 'getOrders'));
+}
+
+exports.createOrder = (req, res) => {
+    let fetchedCart;
+    req.user.getCart()
+        .then(cart => {
+            fetchedCart = cart;
+            return cart.getProducts();
+        })
+        .then(products => {
+            return req.user.createOrder()
+                .then(order => {
+                    return order.addProducts(
+                        products.map(product => {
+                            product.orderProduct = { quantity: product.cartProduct.quantity };
+                            return product;
+                        })
+                    );
+                });
+        })
+        .then(() => fetchedCart.setProducts(null))
+        .then(() => res.redirect(config.routes.ORDERS))
+        .catch(err => console.log(err, 'createOrder'));
 }

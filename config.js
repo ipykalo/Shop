@@ -6,6 +6,7 @@ const ROUTES = {
     CHECKOUT: '/checkout',
     CART: '/cart',
     ORDERS: '/orders',
+    CREATE_ORDER: '/create-order',
     ADD_TO_CART: '/add-to-cart',
     DELETE_FROM_CART: '/delete-from-cart',
     ADMIN_PRODUCTS: '/admin/products',
@@ -58,6 +59,12 @@ const PAGES = {
         pageTitle: 'Shop',
         menuItem: 'Orders',
         route: ROUTES.ORDERS
+    },
+    createOrder: {
+        view: 'shop/orders',
+        pageTitle: 'Shop',
+        menuItem: 'Create Order',
+        route: ROUTES.CREATE_ORDER
     },
     products: {
         view: 'admin/products',
