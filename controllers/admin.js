@@ -10,24 +10,22 @@ exports.getCreateProductForm = (req, res) => {
 }
 
 exports.createProduct = (req, res) => {
-    const product = new Product({
+    req.user.createProduct({
         title: req?.body?.title,
         imageUrl: req?.body?.imageUrl,
         description: req?.body?.description,
         price: req?.body?.price
-    });
-    product.create()
+    })
         .then(() => res.redirect(config.routes.INDEX))
         .catch(err => console.log(err, 'createProduct'));
 }
 
 exports.editProduct = (req, res) => {
-    Product.getProduct(req.params.id)
-        .then(([rows]) => {
-            console.log(rows, 'rows')
+    req.user.getProducts({ where: { id: req.params.id } })
+        .then(products => {
             res.render(config?.pages?.editProduct?.view, {
                 config,
-                product: rows[0],
+                product: products[0],
                 path: config?.pages?.editProduct?.route,
                 pageTitle: config?.pages?.editProduct?.pageTitle
             });
@@ -37,33 +35,32 @@ exports.editProduct = (req, res) => {
 
 exports.updateProduct = (req, res) => {
     Product.update({
-        id: req?.body?.id,
         title: req?.body?.title,
         price: req?.body?.price,
         imageUrl: req?.body?.imageUrl,
         description: req?.body?.description
+    }, {
+        where: { id: req.body.id }
     })
         .then(() => res.redirect(config.routes.ADMIN_PRODUCTS))
         .catch(err => console.log(err, 'updateProduct'));
 }
 
 exports.deleteProduct = (req, res) => {
-    Product.delete(req?.params?.id)
+    Product.destroy({ where: { id: req.params.id } })
         .then(() => res.redirect(config.routes.ADMIN_PRODUCTS))
         .catch(err => console.log(err, 'deleteProduct'));
 }
 
 exports.getProducts = (req, res) => {
-    Product.fetchAll()
-        .then(([rows]) => {
-            if (rows) {
-                res.render(config?.pages?.products?.view, {
-                    config,
-                    products: rows,
-                    path: config?.pages?.products?.route,
-                    pageTitle: config?.pages?.products?.pageTitle
-                });
-            }
+    req.user.getProducts()
+        .then(products => {
+            res.render(config?.pages?.products?.view, {
+                config,
+                products: products,
+                path: config?.pages?.products?.route,
+                pageTitle: config?.pages?.products?.pageTitle
+            });
         })
         .catch(err => console.log(err, 'getProducts'));
 }

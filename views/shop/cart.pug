@@ -1,14 +1,20 @@
 extends ../layouts/main.pug
 
+block styles 
+    link(rel="stylesheet", href="/css/cart.css")
+
 block content 
     main
         if products.length > 0
-            each product in products
-                ul 
-                    li 
-                        p #{product.title} (#{product.quantity})
+            ul 
+                each product in products
+                    li.cart
+                        p #{product.title} (#{product.cartProduct.quantity})
                         form(action=`${config.routes.DELETE_FROM_CART}`, method="post")
-                            input(type="hidden" name="id" value=`${product.productID}`)
-                            button.btn.cart Delete
+                            input(type="hidden" name="id" value=`${product.id}`)
+                            button.btn.cart Delete  
+                hr                    
+                form(action=`${config.routes.CREATE_ORDER}`, method="post")
+                    button.btn(type="submit") Create Order                               
         else 
             h1 No Products in the Cart   

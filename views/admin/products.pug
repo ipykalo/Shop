@@ -17,7 +17,7 @@ block content
                             h2.product__price #{product.price}$
                             p.product__description #{product.description}
                         div.card__actions
-                            a.btn(href=`${config.routes.ADMIN_EDIT_PRODUCT}/${product.productID}`) Edit
-                            a.btn(href=`${config.routes.ADMIN_DELETE_PRODUCT}/${product.productID}`) Delete
+                            a.btn(href=`${config.routes.ADMIN_EDIT_PRODUCT}/${product.id}`) Edit
+                            a.btn(href=`${config.routes.ADMIN_DELETE_PRODUCT}/${product.id}`) Delete
         else 
             h1 No Products!

@@ -1,0 +1,20 @@
+ul {
+    list-style: none;
+}
+
+li.cart {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 400px;
+    background-color: #076c623d;
+    border-radius: 10px;
+    padding: 0 10px;
+    box-shadow: 5px 5px 10px #008000a6;
+    margin-bottom: 20px;
+}
+
+p {
+    color: #187948f2;
+}
