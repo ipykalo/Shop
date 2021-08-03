@@ -16,20 +16,15 @@ exports.createProduct = (req, res) => {
         description: req?.body?.description,
         price: req?.body?.price
     });
+
+    console.log(product);
+
     product.save()
         .then(resp => {
             console.log(resp);
             res.redirect(config.routes.INDEX)
         })
         .catch(err => console.log(err, 'createProduct'));
-    // req.user.createProduct({
-    //     title: req?.body?.title,
-    //     imageUrl: req?.body?.imageUrl,
-    //     description: req?.body?.description,
-    //     price: req?.body?.price
-    // })
-    //     .then(() => res.redirect(config.routes.INDEX))
-    //     .catch(err => console.log(err, 'createProduct'));
 }
 
 exports.editProduct = (req, res) => {
@@ -65,7 +60,7 @@ exports.deleteProduct = (req, res) => {
 }
 
 exports.getProducts = (req, res) => {
-    req.user.getProducts()
+    Product.fetchAll()
         .then(products => {
             res.render(config?.pages?.products?.view, {
                 config,

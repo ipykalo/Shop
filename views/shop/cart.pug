@@ -11,7 +11,7 @@ block content
                     li.cart
                         p #{product.title} (#{product.cartProduct.quantity})
                         form(action=`${config.routes.DELETE_FROM_CART}`, method="post")
-                            input(type="hidden" name="id" value=`${product.id}`)
+                            input(type="hidden" name="id" value=`${product._id}`)
                             button.btn.cart Delete  
                 hr                    
                 form(action=`${config.routes.CREATE_ORDER}`, method="post")

@@ -2,7 +2,7 @@ const config = require('../config');
 const Product = require('../models/product');
 
 exports.getProducts = (req, res) => {
-    req.user.getProducts()
+    Product.fetchAll()
         .then(products => {
             res.render(config?.pages?.productList?.view, {
                 config,
@@ -15,11 +15,13 @@ exports.getProducts = (req, res) => {
 }
 
 exports.getProduct = (req, res) => {
-    req.user.getProducts({ where: { id: req.params.id } })
-        .then(products => {
+    console.log(req.params.id, 'req.params.id')
+    Product.fetchOne(req.params.id)
+        .then(product => {
+            console.log(product);
             res.render(config?.pages?.productDetail?.view, {
                 config,
-                product: products[0],
+                product: product,
                 path: config?.routes.PRODUCTS,
                 pageTitle: config?.pages?.productDetail?.pageTitle
             });
@@ -28,7 +30,7 @@ exports.getProduct = (req, res) => {
 }
 
 exports.getIndex = (req, res) => {
-    req.user.getProducts()
+    Product.fetchAll()
         .then(products => {
             res.render(config?.pages?.index?.view, {
                 config,
