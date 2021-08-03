@@ -10,14 +10,26 @@ exports.getCreateProductForm = (req, res) => {
 }
 
 exports.createProduct = (req, res) => {
-    req.user.createProduct({
+    const product = new Product({
         title: req?.body?.title,
         imageUrl: req?.body?.imageUrl,
         description: req?.body?.description,
         price: req?.body?.price
-    })
-        .then(() => res.redirect(config.routes.INDEX))
+    });
+    product.save()
+        .then(resp => {
+            console.log(resp);
+            res.redirect(config.routes.INDEX)
+        })
         .catch(err => console.log(err, 'createProduct'));
+    // req.user.createProduct({
+    //     title: req?.body?.title,
+    //     imageUrl: req?.body?.imageUrl,
+    //     description: req?.body?.description,
+    //     price: req?.body?.price
+    // })
+    //     .then(() => res.redirect(config.routes.INDEX))
+    //     .catch(err => console.log(err, 'createProduct'));
 }
 
 exports.editProduct = (req, res) => {
