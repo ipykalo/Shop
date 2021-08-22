@@ -16,9 +16,6 @@ exports.createProduct = (req, res) => {
         description: req?.body?.description,
         price: req?.body?.price
     });
-
-    console.log(product);
-
     product.save()
         .then(resp => {
             console.log(resp);
@@ -28,11 +25,11 @@ exports.createProduct = (req, res) => {
 }
 
 exports.editProduct = (req, res) => {
-    req.user.getProducts({ where: { id: req.params.id } })
-        .then(products => {
+    Product.fetchOne(req.params.id)
+        .then(product => {
             res.render(config?.pages?.editProduct?.view, {
                 config,
-                product: products[0],
+                product: product,
                 path: config?.pages?.editProduct?.route,
                 pageTitle: config?.pages?.editProduct?.pageTitle
             });
@@ -42,19 +39,18 @@ exports.editProduct = (req, res) => {
 
 exports.updateProduct = (req, res) => {
     Product.update({
+        id: req.body.id,
         title: req?.body?.title,
         price: req?.body?.price,
         imageUrl: req?.body?.imageUrl,
         description: req?.body?.description
-    }, {
-        where: { id: req.body.id }
     })
         .then(() => res.redirect(config.routes.ADMIN_PRODUCTS))
         .catch(err => console.log(err, 'updateProduct'));
 }
 
 exports.deleteProduct = (req, res) => {
-    Product.destroy({ where: { id: req.params.id } })
+    Product.delete(req.params.id)
         .then(() => res.redirect(config.routes.ADMIN_PRODUCTS))
         .catch(err => console.log(err, 'deleteProduct'));
 }

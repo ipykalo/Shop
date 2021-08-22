@@ -15,10 +15,8 @@ exports.getProducts = (req, res) => {
 }
 
 exports.getProduct = (req, res) => {
-    console.log(req.params.id, 'req.params.id')
     Product.fetchOne(req.params.id)
         .then(product => {
-            console.log(product);
             res.render(config?.pages?.productDetail?.view, {
                 config,
                 product: product,
