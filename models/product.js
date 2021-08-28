@@ -3,11 +3,12 @@ const mongodb = require('mongodb');
 
 class Product {
 
-    constructor({ title, imageUrl, description, price }) {
+    constructor({ title, imageUrl, description, price, userId }) {
         this.title = title;
         this.imageUrl = imageUrl;
         this.description = description;
         this.price = price;
+        this.userId = userId;
     }
 
     save() {

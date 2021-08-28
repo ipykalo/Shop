@@ -10,17 +10,15 @@ exports.getCreateProductForm = (req, res) => {
 }
 
 exports.createProduct = (req, res) => {
-    const product = new Product({
+    new Product({
         title: req?.body?.title,
         imageUrl: req?.body?.imageUrl,
         description: req?.body?.description,
-        price: req?.body?.price
-    });
-    product.save()
-        .then(resp => {
-            console.log(resp);
-            res.redirect(config.routes.INDEX)
-        })
+        price: req?.body?.price,
+        userId: req.user._id
+    })
+        .save()
+        .then(() => res.redirect(config.routes.INDEX))
         .catch(err => console.log(err, 'createProduct'));
 }
 
