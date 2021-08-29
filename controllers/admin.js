@@ -49,7 +49,10 @@ exports.updateProduct = (req, res) => {
 
 exports.deleteProduct = (req, res) => {
     Product.delete(req.params.id)
-        .then(() => res.redirect(config.routes.ADMIN_PRODUCTS))
+        .then(() => {
+            req.user.deleteFromOrder(req.params.id);
+            res.redirect(config.routes.ADMIN_PRODUCTS)
+        })
         .catch(err => console.log(err, 'deleteProduct'));
 }
 

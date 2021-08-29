@@ -75,7 +75,7 @@ exports.getCheckout = (req, res) => {
 }
 
 exports.getOrders = (req, res) => {
-    req.user.getOrders({ include: 'products' })
+    req.user.getOrders()
         .then(orders => {
             res.render(config?.pages?.orders?.view, {
                 config,
@@ -88,24 +88,7 @@ exports.getOrders = (req, res) => {
 }
 
 exports.createOrder = (req, res) => {
-    let fetchedCart;
-    req.user.getCart()
-        .then(cart => {
-            fetchedCart = cart;
-            return cart.getProducts();
-        })
-        .then(products => {
-            return req.user.createOrder()
-                .then(order => {
-                    return order.addProducts(
-                        products.map(product => {
-                            product.orderProduct = { quantity: product.cartProduct.quantity };
-                            return product;
-                        })
-                    );
-                });
-        })
-        .then(() => fetchedCart.setProducts(null))
+    req.user.addOrder()
         .then(() => res.redirect(config.routes.ORDERS))
         .catch(err => console.log(err, 'createOrder'));
 }
