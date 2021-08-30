@@ -5,8 +5,6 @@ const Product = require('./models/product');
 const User = require('./models/user');
 const Cart = require('./models/cart');
 const CartProduct = require('./models/cart-product');
-const Order = require('./models/order');
-const OrderProduct = require('./models/order-product');
 
 const app = express();
 const adminRoutes = require('./routes/admin');
