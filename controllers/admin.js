@@ -14,8 +14,7 @@ exports.createProduct = (req, res) => {
         title: req?.body?.title,
         imageUrl: req?.body?.imageUrl,
         description: req?.body?.description,
-        price: req?.body?.price,
-        userId: req.user._id
+        price: req?.body?.price
     })
         .save()
         .then(() => res.redirect(config.routes.INDEX))
@@ -23,7 +22,7 @@ exports.createProduct = (req, res) => {
 }
 
 exports.editProduct = (req, res) => {
-    Product.fetchOne(req.params.id)
+    Product.findById(req.params.id)
         .then(product => {
             res.render(config?.pages?.editProduct?.view, {
                 config,
@@ -57,7 +56,7 @@ exports.deleteProduct = (req, res) => {
 }
 
 exports.getProducts = (req, res) => {
-    Product.fetchAll()
+    Product.find()
         .then(products => {
             res.render(config?.pages?.products?.view, {
                 config,

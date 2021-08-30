@@ -18,14 +18,14 @@ app.set('views', 'views');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(helper.getPath('public'))); //Serving static files (CSS)
 
-app.use((req, res, next) => {
-    User.find('612a2bcbc4a142c86e92bf1a')
-        .then(user => {
-            req.user = new User(user._id, user.name, user.email, user.cart);
-            next();
-        })
-        .catch(err => console.log(err, 'FindUser'));
-});
+// app.use((req, res, next) => {
+//     User.find('612a2bcbc4a142c86e92bf1a')
+//         .then(user => {
+//             req.user = new User(user._id, user.name, user.email, user.cart);
+//             next();
+//         })
+//         .catch(err => console.log(err, 'FindUser'));
+// });
 
 app.use(adminRoutes);
 app.use(shopRoutes);

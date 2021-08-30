@@ -2,7 +2,7 @@ const config = require('../config');
 const Product = require('../models/product');
 
 exports.getProducts = (req, res) => {
-    Product.fetchAll()
+    Product.find()
         .then(products => {
             res.render(config?.pages?.productList?.view, {
                 config,
@@ -15,7 +15,7 @@ exports.getProducts = (req, res) => {
 }
 
 exports.getProduct = (req, res) => {
-    Product.fetchOne(req.params.id)
+    Product.findById(req.params.id)
         .then(product => {
             res.render(config?.pages?.productDetail?.view, {
                 config,
@@ -28,7 +28,7 @@ exports.getProduct = (req, res) => {
 }
 
 exports.getIndex = (req, res) => {
-    Product.fetchAll()
+    Product.find()
         .then(products => {
             res.render(config?.pages?.index?.view, {
                 config,
