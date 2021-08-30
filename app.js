@@ -1,10 +1,8 @@
 const express = require('express');
 const helper = require('./util/helper');
-const mongodb = require('./util/db');
+const mongoose = require('mongoose');
 const Product = require('./models/product');
 const User = require('./models/user');
-const Cart = require('./models/cart');
-const CartProduct = require('./models/cart-product');
 
 const app = express();
 const adminRoutes = require('./routes/admin');
@@ -33,8 +31,10 @@ app.use(adminRoutes);
 app.use(shopRoutes);
 app.use(errorController.getNoteFoundPage);
 
-mongodb.mongoClient()
-    .then(() => app.listen(3000, () => console.log("Server is runing!")));
+mongoose
+    .connect("mongodb+srv://ipyka:hV2VuDQK9NoUEQGI@cluster0.buupe.mongodb.net/shop?retryWrites=true&w=majority")
+    .then(() => app.listen(3000, () => console.log("Server is runing!")))
+    .catch(err => console.log(err, 'db connection'));
 
 
 return
