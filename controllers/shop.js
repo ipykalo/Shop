@@ -2,7 +2,7 @@ const config = require('../config');
 const Product = require('../models/product');
 
 exports.getProducts = (req, res) => {
-    req.user.getProducts()
+    Product.fetchAll()
         .then(products => {
             res.render(config?.pages?.productList?.view, {
                 config,
@@ -15,11 +15,11 @@ exports.getProducts = (req, res) => {
 }
 
 exports.getProduct = (req, res) => {
-    req.user.getProducts({ where: { id: req.params.id } })
-        .then(products => {
+    Product.fetchOne(req.params.id)
+        .then(product => {
             res.render(config?.pages?.productDetail?.view, {
                 config,
-                product: products[0],
+                product: product,
                 path: config?.routes.PRODUCTS,
                 pageTitle: config?.pages?.productDetail?.pageTitle
             });
@@ -28,7 +28,7 @@ exports.getProduct = (req, res) => {
 }
 
 exports.getIndex = (req, res) => {
-    req.user.getProducts()
+    Product.fetchAll()
         .then(products => {
             res.render(config?.pages?.index?.view, {
                 config,
@@ -42,7 +42,6 @@ exports.getIndex = (req, res) => {
 
 exports.getCart = (req, res) => {
     req.user.getCart()
-        .then(cart => cart.getProducts())
         .then(products => {
             res.render(config?.pages?.cart?.view, {
                 config,
@@ -55,27 +54,14 @@ exports.getCart = (req, res) => {
 }
 
 exports.addToCart = (req, res) => {
-    let cart;
-    req.user.getCart()
-        .then(fetchedCart => {
-            cart = fetchedCart;
-            return fetchedCart.getProducts({ where: { id: req?.body?.id } });
-        })
-        .then(([product]) => product ? product : Product.findByPk(req?.body?.id))
-        .then(product => {
-            const quantity = product?.cartProduct ? product.cartProduct.quantity + 1 : 1;
-            return cart.addProduct(product, { through: { quantity } });
-        })
+    Product.fetchOne(req.body.id)
+        .then(product => req.user.addToCart(product))
         .then(() => res.redirect(config.routes.CART))
         .catch(err => console.log(err, 'addToCart'));
 }
 
 exports.deleteFromCart = (req, res) => {
-    req.user.getCart()
-        .then(fetchedCart => {
-            return fetchedCart.getProducts({ where: { id: req?.body?.id } });
-        })
-        .then(([product]) => product ? product.cartProduct.destroy() : null)
+    req.user.deleteFromCart(req?.body?.id)
         .then(() => res.redirect(config.routes.CART))
         .catch(err => console.log(err, 'deleteFromCart'));
 }
@@ -89,7 +75,7 @@ exports.getCheckout = (req, res) => {
 }
 
 exports.getOrders = (req, res) => {
-    req.user.getOrders({ include: 'products' })
+    req.user.getOrders()
         .then(orders => {
             res.render(config?.pages?.orders?.view, {
                 config,
@@ -102,24 +88,7 @@ exports.getOrders = (req, res) => {
 }
 
 exports.createOrder = (req, res) => {
-    let fetchedCart;
-    req.user.getCart()
-        .then(cart => {
-            fetchedCart = cart;
-            return cart.getProducts();
-        })
-        .then(products => {
-            return req.user.createOrder()
-                .then(order => {
-                    return order.addProducts(
-                        products.map(product => {
-                            product.orderProduct = { quantity: product.cartProduct.quantity };
-                            return product;
-                        })
-                    );
-                });
-        })
-        .then(() => fetchedCart.setProducts(null))
+    req.user.addOrder()
         .then(() => res.redirect(config.routes.ORDERS))
         .catch(err => console.log(err, 'createOrder'));
 }

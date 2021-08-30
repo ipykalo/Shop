@@ -10,22 +10,24 @@ exports.getCreateProductForm = (req, res) => {
 }
 
 exports.createProduct = (req, res) => {
-    req.user.createProduct({
+    new Product({
         title: req?.body?.title,
         imageUrl: req?.body?.imageUrl,
         description: req?.body?.description,
-        price: req?.body?.price
+        price: req?.body?.price,
+        userId: req.user._id
     })
+        .save()
         .then(() => res.redirect(config.routes.INDEX))
         .catch(err => console.log(err, 'createProduct'));
 }
 
 exports.editProduct = (req, res) => {
-    req.user.getProducts({ where: { id: req.params.id } })
-        .then(products => {
+    Product.fetchOne(req.params.id)
+        .then(product => {
             res.render(config?.pages?.editProduct?.view, {
                 config,
-                product: products[0],
+                product: product,
                 path: config?.pages?.editProduct?.route,
                 pageTitle: config?.pages?.editProduct?.pageTitle
             });
@@ -35,25 +37,27 @@ exports.editProduct = (req, res) => {
 
 exports.updateProduct = (req, res) => {
     Product.update({
+        id: req.body.id,
         title: req?.body?.title,
         price: req?.body?.price,
         imageUrl: req?.body?.imageUrl,
         description: req?.body?.description
-    }, {
-        where: { id: req.body.id }
     })
         .then(() => res.redirect(config.routes.ADMIN_PRODUCTS))
         .catch(err => console.log(err, 'updateProduct'));
 }
 
 exports.deleteProduct = (req, res) => {
-    Product.destroy({ where: { id: req.params.id } })
-        .then(() => res.redirect(config.routes.ADMIN_PRODUCTS))
+    Product.delete(req.params.id)
+        .then(() => {
+            req.user.deleteFromOrder(req.params.id);
+            res.redirect(config.routes.ADMIN_PRODUCTS)
+        })
         .catch(err => console.log(err, 'deleteProduct'));
 }
 
 exports.getProducts = (req, res) => {
-    req.user.getProducts()
+    Product.fetchAll()
         .then(products => {
             res.render(config?.pages?.products?.view, {
                 config,

@@ -1,12 +1,10 @@
 const express = require('express');
 const helper = require('./util/helper');
-const sequelize = require('./util/db');
+const mongodb = require('./util/db');
 const Product = require('./models/product');
 const User = require('./models/user');
 const Cart = require('./models/cart');
 const CartProduct = require('./models/cart-product');
-const Order = require('./models/order');
-const OrderProduct = require('./models/order-product');
 
 const app = express();
 const adminRoutes = require('./routes/admin');
@@ -23,9 +21,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(helper.getPath('public'))); //Serving static files (CSS)
 
 app.use((req, res, next) => {
-    User.findByPk(1)
+    User.find('612a2bcbc4a142c86e92bf1a')
         .then(user => {
-            req.user = user;
+            req.user = new User(user._id, user.name, user.email, user.cart);
             next();
         })
         .catch(err => console.log(err, 'FindUser'));
@@ -34,20 +32,13 @@ app.use((req, res, next) => {
 app.use(adminRoutes);
 app.use(shopRoutes);
 app.use(errorController.getNoteFoundPage);
-/**
- * Setting relationship between tables
- */
-User.hasMany(Product, {
-    constraints: true,
-    onDelete: 'CASCADE'
-});
-User.hasOne(Cart);
-Cart.belongsToMany(Product, { through: CartProduct });
-Product.belongsToMany(Cart, { through: CartProduct });
-User.hasMany(Order);
-Order.belongsToMany(Product, { through: OrderProduct });
 
-sequelize.sync()
+mongodb.mongoClient()
+    .then(() => app.listen(3000, () => console.log("Server is runing!")));
+
+
+return
+mongodb.sync()
     //sequelize.sync({ force: true })
     .then(() => User.findByPk(1))
     .then(user => {

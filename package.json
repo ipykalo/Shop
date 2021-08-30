@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
+    "mongodb": "^4.0.1",
     "mysql2": "^2.2.5",
     "pug": "^3.0.2",
     "sequelize": "^6.6.5"

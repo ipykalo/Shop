@@ -6,9 +6,9 @@ block content
             ul 
                 each order in orders
                     li
-                        h1 # #{order.id}
+                        h1 Order: #{order._id}
                             ul 
-                                each product in order.products
-                                    li Product title #{product.orderProduct.quantity}                        
+                                each product in order.items
+                                    li #{product.title}(#{product.quantity})                       
         else 
             h1 No Orders 
