@@ -35,8 +35,7 @@ exports.editProduct = (req, res) => {
 }
 
 exports.updateProduct = (req, res) => {
-    Product.update({
-        id: req.body.id,
+    Product.updateOne({ _id: req.body.id }, {
         title: req?.body?.title,
         price: req?.body?.price,
         imageUrl: req?.body?.imageUrl,
@@ -47,9 +46,9 @@ exports.updateProduct = (req, res) => {
 }
 
 exports.deleteProduct = (req, res) => {
-    Product.delete(req.params.id)
+    Product.deleteOne({ _id: req.params.id })
         .then(() => {
-            req.user.deleteFromOrder(req.params.id);
+            //req.user.deleteFromOrder(req.params.id);
             res.redirect(config.routes.ADMIN_PRODUCTS)
         })
         .catch(err => console.log(err, 'deleteProduct'));
