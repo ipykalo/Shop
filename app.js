@@ -20,7 +20,10 @@ app.use(express.static(helper.getPath('public'))); //Serving static files (CSS)
 
 app.use((req, res, next) => {
     User.findById('612e11054eb0ac89758afe0c')
-        .then(user => req.user = user && next())
+        .then(user => {
+            req.user = user;
+            next();
+        })
         .catch(err => console.log(err, 'FindUser'));
 });
 
