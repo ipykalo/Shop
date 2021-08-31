@@ -41,11 +41,11 @@ exports.getIndex = (req, res) => {
 }
 
 exports.getCart = (req, res) => {
-    req.user.getCart()
+    req.user.populate('cart.items.productId')
         .then(products => {
             res.render(config?.pages?.cart?.view, {
                 config,
-                products: products,
+                products: products.cart.items,
                 path: config?.pages?.cart?.route,
                 pageTitle: config?.pages?.cart?.pageTitle
             });
@@ -54,7 +54,7 @@ exports.getCart = (req, res) => {
 }
 
 exports.addToCart = (req, res) => {
-    Product.fetchOne(req.body.id)
+    Product.findById(req.body.id)
         .then(product => req.user.addToCart(product))
         .then(() => res.redirect(config.routes.CART))
         .catch(err => console.log(err, 'addToCart'));

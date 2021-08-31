@@ -152,4 +152,17 @@ const User = new mongoose.Schema({
     }
 });
 
+User.methods.addToCart = function (product) {
+    const index = this.cart.items.findIndex(i => i.productId.toString() === product._id.toString());
+    const cartItems = [...this.cart.items];
+
+    if (index > -1) {
+        cartItems[index].quantity = cartItems[index].quantity + 1;
+    } else {
+        cartItems.push({ productId: product._id, quantity: 1 });
+    }
+    this.cart.items = cartItems;
+    this.save();
+}
+
 module.exports = mongoose.model('User', User);

@@ -57,9 +57,7 @@ exports.deleteProduct = (req, res) => {
 
 exports.getProducts = (req, res) => {
     Product.find()
-        //.populate('userId') Fetch related data
         .then(products => {
-            console.log(products, 'products')
             res.render(config?.pages?.products?.view, {
                 config,
                 products: products,
