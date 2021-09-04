@@ -162,7 +162,12 @@ User.methods.addToCart = function (product) {
         cartItems.push({ productId: product._id, quantity: 1 });
     }
     this.cart.items = cartItems;
-    this.save();
+    return this.save();
+}
+
+User.methods.deleteFromCart = function (id) {
+    this.cart.items = this.cart.items.filter(i => i.productId.toString() !== id.toString());
+    return this.save();
 }
 
 module.exports = mongoose.model('User', User);
