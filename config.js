@@ -14,7 +14,8 @@ const ROUTES = {
     ADMIN_EDIT_PRODUCT: '/admin/edit-product',
     ADMIN_EDIT_PRODUCT_ID: '/admin/edit-product/:id',
     ADMIN_DELETE_PRODUCT: '/admin/delete-product',
-    ADMIN_DELETE_PRODUCT_ID: '/admin/delete-product/:id'
+    ADMIN_DELETE_PRODUCT_ID: '/admin/delete-product/:id',
+    LOGIN: '/login'
 }
 
 const PAGES = {
@@ -88,6 +89,12 @@ const PAGES = {
         view: '404',
         pageTitle: 'Page Not Found',
         route: ''
+    },
+    login: {
+        view: 'auth/login',
+        pageTitle: 'Login',
+        menuItem: 'Login',
+        route: ROUTES.LOGIN
     }
 }
 

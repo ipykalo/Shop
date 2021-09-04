@@ -6,6 +6,7 @@ const User = require('./models/user');
 const app = express();
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
+const authRoutes = require('./routes/auth');
 const errorController = require('./controllers/error');
 /**
  * Dynamic templating engin (pug) configuration
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
 
 app.use(adminRoutes);
 app.use(shopRoutes);
+app.use(authRoutes);
 app.use(errorController.getNoteFoundPage);
 
 mongoose

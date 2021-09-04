@@ -35,15 +35,22 @@ html(lang="en")
                             class=(path === config.pages.orders.route ? config.classes.active : '')
                         ) #{config.pages.orders.menuItem}    
 
-                    li.main-header__item
-                        a(
-                            href=`${config.pages.addProduct.route}` 
-                            class=(path === config.pages.addProduct.route ? config.classes.active : '')
-                        ) #{config.pages.addProduct.menuItem}
+                    if isLoggedIn
+                        li.main-header__item
+                            a(
+                                href=`${config.pages.addProduct.route}` 
+                                class=(path === config.pages.addProduct.route ? config.classes.active : '')
+                            ) #{config.pages.addProduct.menuItem}
 
+                        li.main-header__item
+                            a(
+                                href=`${config.pages.products.route}` 
+                                class=(path === config.pages.products.route ? config.classes.active : '')
+                            ) #{config.pages.products.menuItem}   
+                ul.main-header__item-list   
                     li.main-header__item
                         a(
-                            href=`${config.pages.products.route}` 
-                            class=(path === config.pages.products.route ? config.classes.active : '')
-                        ) #{config.pages.products.menuItem}    
+                            href=`${config.pages.login.route}`
+                            class=(path === config.pages.login.route ? config.classes.active : '')
+                        ) Login   
     block content
