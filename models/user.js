@@ -137,17 +137,18 @@ const User = new mongoose.Schema({
     },
     cart: {
         items: {
-            type: [{
-                productId: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    required: true,
-                    ref: 'Product'
-                },
-                quantity: {
-                    type: Number,
-                    required: true
-                }
-            }]
+            type: [
+                {
+                    productId: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        required: true,
+                        ref: 'Product'
+                    },
+                    quantity: {
+                        type: Number,
+                        required: true
+                    }
+                }]
         }
     }
 });
@@ -168,6 +169,11 @@ User.methods.addToCart = function (product) {
 User.methods.deleteFromCart = function (id) {
     this.cart.items = this.cart.items.filter(i => i.productId.toString() !== id.toString());
     return this.save();
+}
+
+User.methods.clearCart = function () {
+    this.cart = { items: [] }
+    this.save();
 }
 
 module.exports = mongoose.model('User', User);

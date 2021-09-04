@@ -1,7 +1,6 @@
 const express = require('express');
 const helper = require('./util/helper');
 const mongoose = require('mongoose');
-const Product = require('./models/product');
 const User = require('./models/user');
 
 const app = express();

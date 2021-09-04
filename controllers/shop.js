@@ -1,5 +1,6 @@
 const config = require('../config');
 const Product = require('../models/product');
+const Order = require('../models/order');
 
 exports.getProducts = (req, res) => {
     Product.find()
@@ -75,7 +76,7 @@ exports.getCheckout = (req, res) => {
 }
 
 exports.getOrders = (req, res) => {
-    req.user.getOrders()
+    Order.find({ 'user.userId': req.user._id })
         .then(orders => {
             res.render(config?.pages?.orders?.view, {
                 config,
@@ -88,7 +89,19 @@ exports.getOrders = (req, res) => {
 }
 
 exports.createOrder = (req, res) => {
-    req.user.addOrder()
+    req.user.populate('cart.items.productId')
+        .then(cartProducts => {
+            const products = cartProducts.cart.items.map(i => ({ product: { ...i.productId._doc }, quantity: i.quantity }));
+            new Order({
+                products,
+                user: {
+                    name: req.user.name,
+                    userId: req.user._id
+                }
+            })
+                .save()
+        })
+        .then(() => req.user.clearCart())
         .then(() => res.redirect(config.routes.ORDERS))
         .catch(err => console.log(err, 'createOrder'));
 }
