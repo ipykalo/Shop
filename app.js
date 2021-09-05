@@ -1,9 +1,20 @@
 const express = require('express');
-const helper = require('./util/helper');
 const mongoose = require('mongoose');
-const User = require('./models/user');
+const session = require('express-session');
+const MongoDbStore = require('connect-mongodb-session')(session);
+
+const MONGO_DB_DRIVER = 'mongodb+srv://ipyka:hV2VuDQK9NoUEQGI@cluster0.buupe.mongodb.net/shop';
+const SECRET_SESSION_KEY = 'secret-santa';
 
 const app = express();
+const store = new MongoDbStore({
+    uri: MONGO_DB_DRIVER,
+    collection: 'sessions'
+});
+
+const helper = require('./util/helper');
+const User = require('./models/user');
+
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
@@ -17,6 +28,12 @@ app.set('views', 'views');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(helper.getPath('public'))); //Serving static files (CSS)
+app.use(session({
+    store,
+    secret: SECRET_SESSION_KEY,
+    resave: false,
+    saveUninitialized: false
+}));
 
 app.use((req, res, next) => {
     User.findById('612e11054eb0ac89758afe0c')
@@ -33,7 +50,7 @@ app.use(authRoutes);
 app.use(errorController.getNoteFoundPage);
 
 mongoose
-    .connect("mongodb+srv://ipyka:hV2VuDQK9NoUEQGI@cluster0.buupe.mongodb.net/shop?retryWrites=true&w=majority")
+    .connect(MONGO_DB_DRIVER)
     .then(() => {
         return User.findOne()
             .then(user => {

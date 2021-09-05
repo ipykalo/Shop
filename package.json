@@ -10,7 +10,9 @@
   "author": "Ivan Pykalo",
   "license": "ISC",
   "dependencies": {
+    "connect-mongodb-session": "^3.1.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.2",
     "mongodb": "^4.0.1",
     "mongoose": "^6.0.2",
     "mysql2": "^2.2.5",
