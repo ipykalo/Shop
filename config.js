@@ -16,7 +16,8 @@ const ROUTES = {
     ADMIN_DELETE_PRODUCT: '/admin/delete-product',
     ADMIN_DELETE_PRODUCT_ID: '/admin/delete-product/:id',
     LOGIN: '/login',
-    LOGOUT: '/logout'
+    LOGOUT: '/logout',
+    SIGNUP: '/signup'
 }
 
 const PAGES = {
@@ -100,8 +101,14 @@ const PAGES = {
     logout: {
         view: '',
         pageTitle: '',
-        menuItem: 'Login',
+        menuItem: 'Logout',
         route: ROUTES.LOGOUT
+    },
+    signup: {
+        view: 'auth/signup',
+        pageTitle: 'Signup',
+        menuItem: 'Signup',
+        route: ROUTES.SIGNUP
     }
 }
 

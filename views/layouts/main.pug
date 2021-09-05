@@ -52,9 +52,12 @@ html(lang="en")
                     if !isLoggedIn  
                         li.main-header__item
                             form(action=`${config.pages.login.route}` method="get") 
-                                button.btn-auth(type=submit) Login   
+                                button.btn-auth(type=submit) #{config.pages.login.menuItem}   
+                        li.main-header__item
+                            form(action=`${config.pages.signup.route}` method="get") 
+                                button.btn-auth(type=submit) #{config.pages.signup.menuItem}         
                     else                
                         li.main-header__item
                             form(action=`${config.pages.logout.route}` method="post") 
-                                button.btn-auth(type=submit) Logout         
+                                button.btn-auth(type=submit) #{config.pages.logout.menuItem}        
     block content

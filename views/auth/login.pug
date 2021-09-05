@@ -8,8 +8,8 @@ block content
         form.login-form(action=`${config.pages.login.route}` method="post")    
             div.form-control   
                 label(for="email") Email
-                input(type="text", name="email" required)#email
+                input(type="email", name="email" required)#email
             div.form-control   
                 label(for="password") Password
-                input(type="text", name="password", required)#password                
+                input(type="password", name="password", required)#password                
             button.btn(type="submit") Login

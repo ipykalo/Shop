@@ -23,3 +23,17 @@ exports.login = (req, res) => {
 exports.logout = (req, res) => {
     req.session.destroy(() => res.redirect('/'));
 }
+
+exports.getSignupPage = (req, res) => {
+    res.render(config?.pages?.signup?.view, {
+        config,
+        path: config?.pages?.signup.route,
+        pageTitle: config?.pages?.signup.pageTitle,
+        isLoggedIn: req.session.isLoggedIn
+    });
+}
+
+exports.signup = (req, res) => {
+    console.log(req.body);
+    res.redirect('/')
+}
