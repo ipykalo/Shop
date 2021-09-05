@@ -6,7 +6,8 @@ exports.getCreateProductForm = (req, res) => {
     res.render(config?.pages?.addProduct?.view, {
         config,
         path: config?.pages?.addProduct?.route,
-        pageTitle: config?.pages?.addProduct?.pageTitle
+        pageTitle: config?.pages?.addProduct?.pageTitle,
+        isLoggedIn: req.session.isLoggedIn
     });
 }
 
@@ -16,7 +17,7 @@ exports.createProduct = (req, res) => {
         imageUrl: req?.body?.imageUrl,
         description: req?.body?.description,
         price: req?.body?.price,
-        userId: req?.user?._id
+        userId: req?.session?.user?._id
     })
         .save()
         .then(() => res.redirect(config.routes.INDEX))
@@ -30,7 +31,8 @@ exports.editProduct = (req, res) => {
                 config,
                 product: product,
                 path: config?.pages?.editProduct?.route,
-                pageTitle: config?.pages?.editProduct?.pageTitle
+                pageTitle: config?.pages?.editProduct?.pageTitle,
+                isLoggedIn: req.session.isLoggedIn
             });
         })
         .catch(err => console.log(err, 'editProduct'));
@@ -77,7 +79,8 @@ exports.getProducts = (req, res) => {
                 config,
                 products: products,
                 path: config?.pages?.products?.route,
-                pageTitle: config?.pages?.products?.pageTitle
+                pageTitle: config?.pages?.products?.pageTitle,
+                isLoggedIn: req.session.isLoggedIn
             });
         })
         .catch(err => console.log(err, 'getProducts'));

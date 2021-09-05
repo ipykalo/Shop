@@ -108,8 +108,23 @@ main {
   padding: 5px 10px;
 }
 
+.btn-auth {
+  border: 1px solid #00695c;
+  color: #00695c;
+  background: white;
+  border-radius: 3px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
 button.cart {
   padding: 2px;
+}
+
+.btn-auth:hover,
+.btn-auth:active {
+  background-color: #60c460;
+  color: rgb(255, 255, 255);
 }
 
 .btn:hover,

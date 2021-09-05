@@ -23,19 +23,19 @@ html(lang="en")
                             class=(path === config.pages.productList.route ? config.classes.active : '')
                         ) #{config.pages.productList.menuItem}
 
-                    li.main-header__item
-                        a(
-                            href=`${config.pages.cart.route}` 
-                            class=(path === config.pages.cart.route ? config.classes.active : '')
-                        ) #{config.pages.cart.menuItem}
-
-                    li.main-header__item
-                        a(
-                            href=`${config.pages.orders.route}` 
-                            class=(path === config.pages.orders.route ? config.classes.active : '')
-                        ) #{config.pages.orders.menuItem}    
-
                     if isLoggedIn
+                        li.main-header__item
+                            a(
+                                href=`${config.pages.cart.route}` 
+                                class=(path === config.pages.cart.route ? config.classes.active : '')
+                            ) #{config.pages.cart.menuItem}
+
+                        li.main-header__item
+                            a(
+                                href=`${config.pages.orders.route}` 
+                                class=(path === config.pages.orders.route ? config.classes.active : '')
+                            ) #{config.pages.orders.menuItem}    
+
                         li.main-header__item
                             a(
                                 href=`${config.pages.addProduct.route}` 
@@ -46,11 +46,15 @@ html(lang="en")
                             a(
                                 href=`${config.pages.products.route}` 
                                 class=(path === config.pages.products.route ? config.classes.active : '')
-                            ) #{config.pages.products.menuItem}   
-                ul.main-header__item-list   
-                    li.main-header__item
-                        a(
-                            href=`${config.pages.login.route}`
-                            class=(path === config.pages.login.route ? config.classes.active : '')
-                        ) Login   
+                            ) #{config.pages.products.menuItem}      
+
+                ul.main-header__item-list
+                    if !isLoggedIn  
+                        li.main-header__item
+                            form(action=`${config.pages.login.route}` method="get") 
+                                button.btn-auth(type=submit) Login   
+                    else                
+                        li.main-header__item
+                            form(action=`${config.pages.logout.route}` method="post") 
+                                button.btn-auth(type=submit) Logout         
     block content

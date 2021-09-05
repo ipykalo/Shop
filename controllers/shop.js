@@ -9,7 +9,8 @@ exports.getProducts = (req, res) => {
                 config,
                 products: products,
                 path: config?.pages?.productList?.route,
-                pageTitle: config?.pages?.productList?.pageTitle
+                pageTitle: config?.pages?.productList?.pageTitle,
+                isLoggedIn: req.session.isLoggedIn
             });
         })
         .catch(err => console.log(err, 'getProducts'));
@@ -22,7 +23,8 @@ exports.getProduct = (req, res) => {
                 config,
                 product: product,
                 path: config?.routes.PRODUCTS,
-                pageTitle: config?.pages?.productDetail?.pageTitle
+                pageTitle: config?.pages?.productDetail?.pageTitle,
+                isLoggedIn: req.session.isLoggedIn
             });
         })
         .catch(err => console.log(err, 'getProduct'));
@@ -35,7 +37,8 @@ exports.getIndex = (req, res) => {
                 config,
                 products: products,
                 path: config?.pages?.index?.route,
-                pageTitle: config?.pages?.index?.pageTitle
+                pageTitle: config?.pages?.index?.pageTitle,
+                isLoggedIn: req.session.isLoggedIn
             });
         })
         .catch(err => console.log(err, 'getProducts'));
@@ -48,7 +51,8 @@ exports.getCart = (req, res) => {
                 config,
                 products: products.cart.items,
                 path: config?.pages?.cart?.route,
-                pageTitle: config?.pages?.cart?.pageTitle
+                pageTitle: config?.pages?.cart?.pageTitle,
+                isLoggedIn: req.session.isLoggedIn
             });
         })
         .catch(err => console.log(err, 'getCart'))
@@ -71,7 +75,8 @@ exports.getCheckout = (req, res) => {
     res.render(config?.pages?.checkout?.view, {
         config,
         path: config?.pages?.checkout?.route,
-        pageTitle: config?.pages?.checkout?.pageTitle
+        pageTitle: config?.pages?.checkout?.pageTitle,
+        isLoggedIn: req.session.isLoggedIn
     });
 }
 
@@ -82,7 +87,8 @@ exports.getOrders = (req, res) => {
                 config,
                 orders,
                 path: config?.pages?.orders?.route,
-                pageTitle: config?.pages?.orders?.pageTitle
+                pageTitle: config?.pages?.orders?.pageTitle,
+                isLoggedIn: req.session.isLoggedIn
             });
         })
         .catch(err => console.log(err, 'getOrders'));

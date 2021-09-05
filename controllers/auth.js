@@ -1,16 +1,25 @@
 const config = require('../config');
+const User = require('../models/user');
 
 exports.getLoginPage = (req, res) => {
-    console.log(req.session.loggedIn)
     res.render(config?.pages?.login?.view, {
         config,
-        isLoggedIn: false,
         path: config?.pages?.login.route,
-        pageTitle: config?.pages?.login.pageTitle
+        pageTitle: config?.pages?.login.pageTitle,
+        isLoggedIn: req.session.isLoggedIn
     });
 }
 
 exports.login = (req, res) => {
-    req.session.loggedIn = true;
-    res.redirect('/');
+    User.findById('6134a1bba797d4a3f60c2596')
+        .then(user => {
+            req.session.isLoggedIn = true;
+            req.session.user = user;
+            req.session.save(() => res.redirect('/'));
+        })
+        .catch(err => console.log(err, 'login'));
+}
+
+exports.logout = (req, res) => {
+    req.session.destroy(() => res.redirect('/'));
 }

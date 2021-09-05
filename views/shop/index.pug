@@ -17,6 +17,7 @@ block content
                             h2.product__price #{product.price}$
                             p.product__description #{product.description}
                         div.card__actions
-                            include ../includes/add-to-card.pug
+                            if isLoggedIn 
+                                include ../includes/add-to-card.pug
         else 
             h1 No Products!
