@@ -52,22 +52,6 @@ app.use(shopRoutes);
 app.use(authRoutes);
 app.use(errorController.getNoteFoundPage);
 
-mongoose
-    .connect(MONGO_DB_DRIVER)
-    .then(() => {
-        return User.findOne()
-            .then(user => {
-                if (!user) {
-                    new User({
-                        name: 'Ivan',
-                        email: 'ipyka@gmail.com',
-                        cart: {
-                            items: []
-                        }
-                    })
-                        .save()
-                }
-            });
-    })
+mongoose.connect(MONGO_DB_DRIVER)
     .then(() => app.listen(3000, () => console.log("Server is runing!")))
     .catch(err => console.log(err, 'db connection'));
