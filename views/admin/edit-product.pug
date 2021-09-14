@@ -6,7 +6,8 @@ block styles
 
 block content 
     main
-        form.product-form(action=`${config.pages.editProduct.route}` method="post")    
+        form.product-form(action=`${config.pages.editProduct.route}` method="post")
+            input(type="hidden", name="_csrf" value=`${scrfToken}`)     
             div.form-control   
                 label(for="title") Title
                 input(type="text", name="title", value=`${product.title}` required)#title

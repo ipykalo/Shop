@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDbStore = require('connect-mongodb-session')(session);
+const scrf = require('csurf');
 
 const MONGO_DB_DRIVER = 'mongodb+srv://ipyka:hV2VuDQK9NoUEQGI@cluster0.buupe.mongodb.net/shop';
 const SECRET_SESSION_KEY = 'secret-santa';
@@ -19,6 +20,7 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
 const errorController = require('./controllers/error');
+const csrf = require('csurf');
 /**
  * Dynamic templating engin (pug) configuration
  * To render file use this res.render('shop')
@@ -45,6 +47,15 @@ app.use((req, res, next) => {
             next();
         })
         .catch(err => console.log(err, 'FindUser'));
+});
+
+//csrf token protection that will be added to every request
+app.use(csrf());
+
+app.use((req, res, next) => {
+    res.locals.isLoggedIn = req.session.isLoggedIn;
+    res.locals.scrfToken = req.csrfToken();
+    next();
 });
 
 app.use(adminRoutes);

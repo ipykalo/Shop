@@ -59,5 +59,6 @@ html(lang="en")
                     else                
                         li.main-header__item
                             form(action=`${config.pages.logout.route}` method="post") 
+                                input(type="hidden", name="_csrf" value=`${scrfToken}`)
                                 button.btn-auth(type=submit) #{config.pages.logout.menuItem}        
     block content

@@ -11,10 +11,12 @@ block content
                     li.cart
                         p #{product.productId.title} (#{product.quantity})
                         form(action=`${config.routes.DELETE_FROM_CART}`, method="post")
+                            input(type="hidden", name="_csrf" value=`${scrfToken}`) 
                             input(type="hidden" name="id" value=`${product.productId._id}`)
                             button.btn.cart Delete  
                 hr                    
                 form(action=`${config.routes.CREATE_ORDER}`, method="post")
+                    input(type="hidden", name="_csrf" value=`${scrfToken}`) 
                     button.btn(type="submit") Create Order                               
         else 
             h1 No Products in the Cart   

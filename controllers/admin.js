@@ -6,8 +6,7 @@ exports.getCreateProductForm = (req, res) => {
     res.render(config?.pages?.addProduct?.view, {
         config,
         path: config?.pages?.addProduct?.route,
-        pageTitle: config?.pages?.addProduct?.pageTitle,
-        isLoggedIn: req.session.isLoggedIn
+        pageTitle: config?.pages?.addProduct?.pageTitle
     });
 }
 
@@ -31,8 +30,7 @@ exports.editProduct = (req, res) => {
                 config,
                 product: product,
                 path: config?.pages?.editProduct?.route,
-                pageTitle: config?.pages?.editProduct?.pageTitle,
-                isLoggedIn: req.session.isLoggedIn
+                pageTitle: config?.pages?.editProduct?.pageTitle
             });
         })
         .catch(err => console.log(err, 'editProduct'));
@@ -79,8 +77,7 @@ exports.getProducts = (req, res) => {
                 config,
                 products: products,
                 path: config?.pages?.products?.route,
-                pageTitle: config?.pages?.products?.pageTitle,
-                isLoggedIn: req.session.isLoggedIn
+                pageTitle: config?.pages?.products?.pageTitle
             });
         })
         .catch(err => console.log(err, 'getProducts'));

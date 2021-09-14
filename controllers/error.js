@@ -6,6 +6,5 @@ exports.getNoteFoundPage = (req, res) => {
             config,
             path: config?.pages?.notFound?.route,
             pageTitle: config?.pages?.notFound?.pageTitle,
-            isLoggedIn: req.session.isLoggedIn
         });
 }

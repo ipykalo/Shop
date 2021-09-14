@@ -6,8 +6,7 @@ exports.getLoginPage = (req, res) => {
     res.render(config?.pages?.login?.view, {
         config,
         path: config?.pages?.login.route,
-        pageTitle: config?.pages?.login.pageTitle,
-        isLoggedIn: req.session.isLoggedIn
+        pageTitle: config?.pages?.login.pageTitle
     });
 }
 
@@ -38,8 +37,7 @@ exports.getSignupPage = (req, res) => {
     res.render(config?.pages?.signup?.view, {
         config,
         path: config?.pages?.signup.route,
-        pageTitle: config?.pages?.signup.pageTitle,
-        isLoggedIn: req.session.isLoggedIn
+        pageTitle: config?.pages?.signup.pageTitle
     });
 }
 
