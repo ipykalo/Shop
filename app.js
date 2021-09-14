@@ -51,7 +51,6 @@ app.use((req, res, next) => {
 
 //csrf token protection that will be added to every request
 app.use(csrf());
-
 app.use((req, res, next) => {
     res.locals.isLoggedIn = req.session.isLoggedIn;
     res.locals.scrfToken = req.csrfToken();
