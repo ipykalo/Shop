@@ -58,7 +58,7 @@ exports.signup = (req, res) => {
                         cart: { items: [] }
                     })
                         .save()
-                        .then(() => res.redirect(config.routes.LOGIN))
+                        .then(() => res.redirect(config.routes.LOGIN));
                 });
         })
         .catch(err => console.log(err, 'signup'));
