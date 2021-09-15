@@ -17,3 +17,6 @@ block content
                 label(for="confirmPassword") Confirm Password
                 input(type="password", name="confirmPassword", required)#confirmPassword                    
             button.btn(type="submit") Signup
+        if errorMsg.length
+            include ../includes/error-message.pug
+                

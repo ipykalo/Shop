@@ -146,3 +146,23 @@ a {
 p {
   word-break: break-word;
 }
+
+.error-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: 20%;
+  background-color: #e22c2cb8;
+  border: 2px solid #ff3131;
+  border-radius: 5px;
+}
+
+.error-box .error {
+  display: block;
+  padding: 15px 10px;
+  color: white;
+  text-align: center;
+}

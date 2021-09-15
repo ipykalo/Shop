@@ -14,11 +14,13 @@ exports.login = (req, res) => {
     User.findOne({ email: req.body.email })
         .then(user => {
             if (!user) {
+                req.flash('error', 'Invalid email or password!');
                 return res.redirect(config.routes.LOGIN);
             }
             return bcrypt.compare(req.body.password, user.password)
                 .then(isMatch => {
                     if (!isMatch) {
+                        req.flash('error', 'Invalid email or password!');
                         return res.redirect(config.routes.LOGIN);
                     }
                     req.session.isLoggedIn = true;
@@ -45,18 +47,19 @@ exports.signup = (req, res) => {
     User.findOne({ email: req.body.email })
         .then(user => {
             if (user) {
+                req.flash('error', 'A user with the email already exists!');
                 return res.redirect(config.routes.SIGNUP);
             }
             return bcrypt.hash(req.body.password, 12)
                 .then(hashedPassword => {
-                    new User({
+                    return new User({
                         email: req.body.email,
                         password: hashedPassword,
                         cart: { items: [] }
                     })
                         .save()
+                        .then(() => res.redirect(config.routes.LOGIN))
                 });
         })
-        .then(() => res.redirect(config.routes.LOGIN))
-        .catch(err => console.log(err, 'login'));
+        .catch(err => console.log(err, 'signup'));
 }

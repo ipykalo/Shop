@@ -14,3 +14,5 @@ block content
                 label(for="password") Password
                 input(type="password", name="password", required)#password                
             button.btn(type="submit") Login
+        if errorMsg.length
+            include ../includes/error-message.pug    
