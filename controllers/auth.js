@@ -1,4 +1,6 @@
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
+
 const config = require('../config');
 const User = require('../models/user');
 
@@ -73,6 +75,12 @@ exports.getResetPassPage = (req, res) => {
 }
 
 exports.resetPassword = (req, res) => {
-    req.flash('error', 'The feature is not implemented yet!');
-    res.redirect(config.routes.RESET_PASSWORD);
+    User.findOne({ email: req.body.email })
+        .then(user => {
+            if (!user) {
+                req.flash('error', 'A user with the email doesn\'t exists!');
+                res.redirect(config.routes.RESET_PASSWORD);
+            }
+        })
+        .catch(err => console.log(err, 'resetPassword'));
 }
