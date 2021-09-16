@@ -32,7 +32,7 @@ exports.login = (req, res) => {
 }
 
 exports.logout = (req, res) => {
-    req.session.destroy(() => res.redirect('/'));
+    req.session.destroy(() => res.redirect(config.routes.LOGIN));
 }
 
 exports.getSignupPage = (req, res) => {
@@ -62,4 +62,17 @@ exports.signup = (req, res) => {
                 });
         })
         .catch(err => console.log(err, 'signup'));
+}
+
+exports.getResetPassPage = (req, res) => {
+    res.render(config?.pages?.resetPassword?.view, {
+        config,
+        path: config?.pages?.resetPassword.route,
+        pageTitle: config?.pages?.resetPassword.pageTitle
+    });
+}
+
+exports.resetPassword = (req, res) => {
+    req.flash('error', 'The feature is not implemented yet!');
+    res.redirect(config.routes.RESET_PASSWORD);
 }

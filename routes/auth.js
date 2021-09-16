@@ -13,4 +13,8 @@ router.get(routes.SIGNUP, authController.getSignupPage);
 
 router.post(routes.SIGNUP, authController.signup);
 
+router.get(routes.RESET_PASSWORD, authController.getResetPassPage);
+
+router.post(routes.RESET_PASSWORD, authController.resetPassword);
+
 module.exports = router;

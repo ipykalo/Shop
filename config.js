@@ -17,7 +17,8 @@ const ROUTES = {
     ADMIN_DELETE_PRODUCT_ID: '/admin/delete-product/:id',
     LOGIN: '/login',
     LOGOUT: '/logout',
-    SIGNUP: '/signup'
+    SIGNUP: '/signup',
+    RESET_PASSWORD: '/reset'
 }
 
 const PAGES = {
@@ -109,7 +110,13 @@ const PAGES = {
         pageTitle: 'Signup',
         menuItem: 'Signup',
         route: ROUTES.SIGNUP
-    }
+    },
+    resetPassword: {
+        view: 'auth/reset-password',
+        pageTitle: 'Reset Password',
+        menuItem: 'Reset Password',
+        route: ROUTES.RESET_PASSWORD
+    },
 }
 
 module.exports = {
