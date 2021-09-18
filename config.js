@@ -18,7 +18,9 @@ const ROUTES = {
     LOGIN: '/login',
     LOGOUT: '/logout',
     SIGNUP: '/signup',
-    RESET_PASSWORD: '/reset'
+    RESET_PASSWORD: '/reset',
+    RESET_PASSWORD_TOKEN: '/reset/:token',
+    NEW_PASSWORD: '/new-password'
 }
 
 const PAGES = {
@@ -117,6 +119,12 @@ const PAGES = {
         menuItem: 'Reset Password',
         route: ROUTES.RESET_PASSWORD
     },
+    newPassword: {
+        view: 'auth/new-password',
+        pageTitle: 'New Password',
+        menuItem: 'New Password',
+        route: ROUTES.NEW_PASSWORD
+    }
 }
 
 module.exports = {

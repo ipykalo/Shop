@@ -10,6 +10,7 @@ const User = new mongoose.Schema({
         required: true
     },
     resetToken: String,
+    resetTokenExp: Number,
     cart: {
         items: {
             type: [
