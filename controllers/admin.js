@@ -37,7 +37,7 @@ exports.editProduct = (req, res) => {
 }
 
 exports.updateProduct = (req, res) => {
-    Product.updateOne({ _id: req.body.id }, {
+    Product.updateOne({ _id: req.body.id, userId: req.user._id }, {
         title: req?.body?.title,
         price: req?.body?.price,
         imageUrl: req?.body?.imageUrl,
@@ -49,29 +49,34 @@ exports.updateProduct = (req, res) => {
 
 exports.deleteProduct = (req, res) => {
     Product
-        .deleteOne({ _id: req.params.id })
-        .then(() => Order.find({ 'user.userId': req.user._id }))
-        .then(orders => {
-            for (let i = 0; i < orders.length; i++) {
-                orders[i].products.forEach((item, index, arr) => {
-                    if (item.product._id.toString() === req.params.id.toString()) {
-                        arr.splice(index, 1);
-                    }
-                });
-                if (!orders[i].products.length) {
-                    orders.splice(i, 1);
-                    --i;
-                }
+        .deleteOne({ _id: req.params.id, userId: req.user._id })
+        .then(({ deletedCount }) => {
+            if (deletedCount === 0) {
+                return;
             }
-            return Order.collection.drop()
-                .then(() => Order.insertMany(orders));
+            return Order.find({ 'user.userId': req.user._id })
+                .then(orders => {
+                    for (let i = 0; i < orders.length; i++) {
+                        orders[i].products.forEach((item, index, arr) => {
+                            if (item.product._id.toString() === req.params.id.toString()) {
+                                arr.splice(index, 1);
+                            }
+                        });
+                        if (!orders[i].products.length) {
+                            orders.splice(i, 1);
+                            --i;
+                        }
+                    }
+                    return Order.collection.drop()
+                        .then(() => Order.insertMany(orders));
+                });
         })
         .then(() => res.redirect(config.routes.ADMIN_PRODUCTS))
         .catch(err => console.log(err, 'deleteProduct'));
 }
 
 exports.getProducts = (req, res) => {
-    Product.find()
+    Product.find({ userId: req.user._id })
         .then(products => {
             res.render(config?.pages?.products?.view, {
                 config,

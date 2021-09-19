@@ -135,7 +135,7 @@ exports.setNewPassword = (req, res) => {
     })
         .then(user => {
             if (!user) {
-                return req.flash('error', 'The password was not upfated!');
+                return req.flash('error', 'The password was not updated!');
             }
             return bcrypt.hash(req.body.password, 12)
                 .then(hashedPassword => {
