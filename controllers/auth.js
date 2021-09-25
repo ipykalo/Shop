@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const config = require('../config');
 const User = require('../models/user');
 const helper = require('../util/helper');
+const { validationResult } = require('express-validator');
 
 exports.getLoginPage = (req, res) => {
     res.render(config?.pages?.login?.view, {
@@ -47,6 +48,15 @@ exports.getSignupPage = (req, res) => {
 }
 
 exports.signup = (req, res) => {
+    const errors = validationResult(req).array();
+    if (errors.length) {
+        return res.status(422).render(config?.pages?.signup?.view, {
+            config,
+            path: config?.pages?.signup.route,
+            pageTitle: config?.pages?.signup.pageTitle,
+            errorMsg: errors[0].msg
+        });
+    }
     User.findOne({ email: req.body.email })
         .then(user => {
             if (user) {
