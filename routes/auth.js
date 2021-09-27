@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/auth');
 const routes = require('../config')?.routes;
-const { check } = require('express-validator');
+const { check, body } = require('express-validator');
 
 router.get(routes.LOGIN, authController.getLoginPage);
 
@@ -15,16 +15,8 @@ router.get(routes.SIGNUP, authController.getSignupPage);
 router.post(
     routes.SIGNUP,
     check('email').isEmail().withMessage('Please enter a valid email.'),
-    check('password').custom(value => {
-        const pattern = /^(?=.{6,}$)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[0-9])(?=.*?\W).*$/;
-        if (!pattern.test(value)) {
-            throw new Error(
-                'Password requires: at least 6 characters, at least one lowercase char, at least one uppercase char, at least one digit, at least one symbol.'
-            );
-        }
-        return true
-    }),
-    check('confirmPassword').custom((value, { req }) => {
+    body('password', 'Length of password should be at least 5 characters.').isLength({ min: 5 }),
+    body('confirmPassword').custom((value, { req }) => {
         if (value !== req.body.password) {
             throw new Error('Confirm Password does not match password');
         }
