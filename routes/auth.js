@@ -20,18 +20,21 @@ router.post(
                         return Promise.reject('A user with the email does not exists.');
                     }
                 });
-        }),
-    body('password').custom((value, { req }) => {
-        return User.findOne({ email: req.body.email })
-            .then(user => {
-                return bcrypt.compare(req.body.password, user.password)
-                    .then(isMatch => {
-                        if (!isMatch) {
-                            return Promise.reject('Invalid password.');
-                        }
-                    });
-            })
-    }),
+        })
+        .normalizeEmail(),
+    body('password')
+        .custom((value, { req }) => {
+            return User.findOne({ email: req.body.email })
+                .then(user => {
+                    return bcrypt.compare(req.body.password, user.password)
+                        .then(isMatch => {
+                            if (!isMatch) {
+                                return Promise.reject('Invalid password.');
+                            }
+                        });
+                })
+        })
+        .trim(),
     authController.login
 );
 
@@ -51,14 +54,19 @@ router.post(
                         return Promise.reject('A user with the email already exists!');
                     }
                 });
+        })
+        .normalizeEmail(),
+    body('password', 'Length of password should be at least 5 characters.')
+        .isLength({ min: 5 })
+        .trim(),
+    body('confirmPassword')
+        .trim()
+        .custom((value, { req }) => {
+            if (value !== req.body.password) {
+                throw new Error('Confirm Password does not match password');
+            }
+            return true
         }),
-    body('password', 'Length of password should be at least 5 characters.').isLength({ min: 5 }),
-    body('confirmPassword').custom((value, { req }) => {
-        if (value !== req.body.password) {
-            throw new Error('Confirm Password does not match password');
-        }
-        return true
-    }),
     authController.signup
 );
 
