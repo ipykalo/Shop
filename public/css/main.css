@@ -148,16 +148,13 @@ p {
 }
 
 .error-box {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
   margin-left: auto;
   margin-right: auto;
-  width: 70%;
+  width: 30%;
   background-color: #e22c2cb8;
   border: 2px solid #ff3131;
   border-radius: 5px;
+  margin-bottom: 5px;
 }
 
 .error-box .error {

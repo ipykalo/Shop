@@ -5,16 +5,27 @@ block styles
     link(rel="stylesheet", href="/css/auth.css")
 block content 
     main
+        include ../includes/error-message.pug 
         form.login-form(action=`${config.pages.login.route}` method="post" novalidate)  
             input(type="hidden", name="_csrf" value=`${scrfToken}`)  
             div.form-control   
                 label(for="email") Email
-                input(type="email", name="email" value=`${oldInput.email}` required)#email
+                input(
+                    type="email", 
+                    name="email",
+                    value=`${oldInput.email}`,
+                    required, 
+                    class=`${errors.find(e => e.param === 'email') ? 'invalid' : null}`
+                )#email
             div.form-control   
                 label(for="password") Password
-                input(type="password", name="password", value=`${oldInput.password}` required)#password                
+                input(
+                    type="password", 
+                    name="password", 
+                    value=`${oldInput.password}`, 
+                    required,
+                    class=`${errors.find(e => e.param === 'password') ? 'invalid' : null}`
+                )#password                
             button.btn(type="submit") Login
             div.resest-pass 
-                a(href=`${config.pages.resetPassword.route}`) Reset Pasword
-        if errorMsg.length
-            include ../includes/error-message.pug    
+                a(href=`${config.pages.resetPassword.route}`) Reset Pasword   

@@ -25,7 +25,7 @@ exports.login = (req, res) => {
             config,
             path: config?.pages?.login.route,
             pageTitle: config?.pages?.login.pageTitle,
-            errorMsg: errors[0].msg,
+            errors: errors,
             oldInput: {
                 email: req.body.email,
                 password: req.body.password
@@ -76,7 +76,7 @@ exports.signup = (req, res) => {
             config,
             path: config?.pages?.signup.route,
             pageTitle: config?.pages?.signup.pageTitle,
-            errorMsg: errors[0].msg,
+            errors: errors,
             oldInput: {
                 email: req.body.email,
                 password: req.body.password,

@@ -57,7 +57,7 @@ app.use(flash());
 app.use((req, res, next) => {
     res.locals.isLoggedIn = req.session.isLoggedIn;
     res.locals.scrfToken = req.csrfToken();
-    res.locals.errorMsg = req.flash('error');
+    res.locals.errors = req.flash('error');
     next();
 });
 
