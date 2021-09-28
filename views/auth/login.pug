@@ -5,7 +5,7 @@ block styles
     link(rel="stylesheet", href="/css/auth.css")
 block content 
     main
-        form.login-form(action=`${config.pages.login.route}` method="post")  
+        form.login-form(action=`${config.pages.login.route}` method="post" novalidate)  
             input(type="hidden", name="_csrf" value=`${scrfToken}`)  
             div.form-control   
                 label(for="email") Email

@@ -15,16 +15,25 @@ exports.getLoginPage = (req, res) => {
 }
 
 exports.login = (req, res) => {
+    const errors = validationResult(req).array();
+    if (errors.length) {
+        return res.status(422).render(config?.pages?.login?.view, {
+            config,
+            path: config?.pages?.login.route,
+            pageTitle: config?.pages?.login.pageTitle,
+            errorMsg: errors[0].msg
+        });
+    }
     User.findOne({ email: req.body.email })
         .then(user => {
             if (!user) {
-                req.flash('error', 'Invalid email or password!');
+                req.flash('error', 'Invalid email!');
                 return res.redirect(config.routes.LOGIN);
             }
             return bcrypt.compare(req.body.password, user.password)
                 .then(isMatch => {
                     if (!isMatch) {
-                        req.flash('error', 'Invalid email or password!');
+                        req.flash('error', 'Invalid password!');
                         return res.redirect(config.routes.LOGIN);
                     }
                     req.session.isLoggedIn = true;

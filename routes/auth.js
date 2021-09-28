@@ -7,13 +7,20 @@ const User = require('../models/user');
 
 router.get(routes.LOGIN, authController.getLoginPage);
 
-router.post(routes.LOGIN, authController.login);
+router.post(
+    routes.LOGIN,
+    body('email')
+        .isEmail()
+        .withMessage('Please enter a valid email.'),
+    authController.login
+);
 
 router.post(routes.LOGOUT, authController.logout);
 
 router.get(routes.SIGNUP, authController.getSignupPage);
 
-router.post(routes.SIGNUP,
+router.post(
+    routes.SIGNUP,
     check('email')
         .isEmail()
         .withMessage('Please enter a valid email.')
