@@ -34,20 +34,9 @@ exports.login = (req, res) => {
     }
     User.findOne({ email: req.body.email })
         .then(user => {
-            if (!user) {
-                req.flash('error', 'Invalid email!');
-                return res.redirect(config.routes.LOGIN);
-            }
-            return bcrypt.compare(req.body.password, user.password)
-                .then(isMatch => {
-                    if (!isMatch) {
-                        req.flash('error', 'Invalid password!');
-                        return res.redirect(config.routes.LOGIN);
-                    }
-                    req.session.isLoggedIn = true;
-                    req.session.user = user;
-                    req.session.save(() => res.redirect('/'));
-                });
+            req.session.isLoggedIn = true;
+            req.session.user = user;
+            req.session.save(() => res.redirect('/'));
         })
         .catch(err => console.log(err, 'login'));
 }
