@@ -9,13 +9,13 @@ block content
             input(type="hidden", name="_csrf" value=`${scrfToken}`)    
             div.form-control   
                 label(for="email") Email
-                input(type="email", name="email" required)#email
+                input(type="email", name="email" value=`${oldInput.email}` required)#email
             div.form-control   
                 label(for="password") Password
-                input(type="password", name="password", required)#password  
+                input(type="password", name="password", value=`${oldInput.password}` required)#password  
             div.form-control   
                 label(for="confirmPassword") Confirm Password
-                input(type="password", name="confirmPassword", required)#confirmPassword                    
+                input(type="password", name="confirmPassword", value=`${oldInput.confirmPassword}` required)#confirmPassword                    
             button.btn(type="submit") Signup
         if errorMsg.length
             include ../includes/error-message.pug

@@ -10,7 +10,11 @@ exports.getLoginPage = (req, res) => {
     res.render(config?.pages?.login?.view, {
         config,
         path: config?.pages?.login.route,
-        pageTitle: config?.pages?.login.pageTitle
+        pageTitle: config?.pages?.login.pageTitle,
+        oldInput: {
+            email: '',
+            password: ''
+        }
     });
 }
 
@@ -21,7 +25,11 @@ exports.login = (req, res) => {
             config,
             path: config?.pages?.login.route,
             pageTitle: config?.pages?.login.pageTitle,
-            errorMsg: errors[0].msg
+            errorMsg: errors[0].msg,
+            oldInput: {
+                email: req.body.email,
+                password: req.body.password
+            }
         });
     }
     User.findOne({ email: req.body.email })
@@ -52,7 +60,12 @@ exports.getSignupPage = (req, res) => {
     res.render(config?.pages?.signup?.view, {
         config,
         path: config?.pages?.signup.route,
-        pageTitle: config?.pages?.signup.pageTitle
+        pageTitle: config?.pages?.signup.pageTitle,
+        oldInput: {
+            email: '',
+            password: '',
+            confirmPassword: ''
+        }
     });
 }
 
@@ -63,7 +76,12 @@ exports.signup = (req, res) => {
             config,
             path: config?.pages?.signup.route,
             pageTitle: config?.pages?.signup.pageTitle,
-            errorMsg: errors[0].msg
+            errorMsg: errors[0].msg,
+            oldInput: {
+                email: req.body.email,
+                password: req.body.password,
+                confirmPassword: req.body.confirmPassword
+            }
         });
     }
     bcrypt.hash(req.body.password, 12)

@@ -9,10 +9,10 @@ block content
             input(type="hidden", name="_csrf" value=`${scrfToken}`)  
             div.form-control   
                 label(for="email") Email
-                input(type="email", name="email" required)#email
+                input(type="email", name="email" value=`${oldInput.email}` required)#email
             div.form-control   
                 label(for="password") Password
-                input(type="password", name="password", required)#password                
+                input(type="password", name="password", value=`${oldInput.password}` required)#password                
             button.btn(type="submit") Login
             div.resest-pass 
                 a(href=`${config.pages.resetPassword.route}`) Reset Pasword
