@@ -1,4 +1,5 @@
 const config = require('../config');
+const { validationResult } = require('express-validator');
 const Product = require('../models/product');
 const Order = require('../models/order');
 
@@ -6,11 +7,32 @@ exports.getCreateProductForm = (req, res) => {
     res.render(config?.pages?.addProduct?.view, {
         config,
         path: config?.pages?.addProduct?.route,
-        pageTitle: config?.pages?.addProduct?.pageTitle
+        pageTitle: config?.pages?.addProduct?.pageTitle,
+        oldInput: {
+            title: '',
+            imageUrl: '',
+            description: '',
+            price: ''
+        }
     });
 }
 
 exports.createProduct = (req, res) => {
+    const errors = validationResult(req).array();
+    if (errors.length) {
+        return res.status(422).render(config?.pages?.addProduct?.view, {
+            config,
+            path: config?.pages?.addProduct.route,
+            pageTitle: config?.pages?.addProduct.pageTitle,
+            errors: errors,
+            oldInput: {
+                title: req?.body?.title,
+                imageUrl: req?.body?.imageUrl,
+                description: req?.body?.description,
+                price: req?.body?.price
+            }
+        });
+    }
     new Product({
         title: req?.body?.title,
         imageUrl: req?.body?.imageUrl,
@@ -37,6 +59,22 @@ exports.editProduct = (req, res) => {
 }
 
 exports.updateProduct = (req, res) => {
+    const errors = validationResult(req).array();
+    if (errors.length) {
+        return res.status(422).render(config?.pages?.editProduct?.view, {
+            config,
+            path: config?.pages?.editProduct.route,
+            pageTitle: config?.pages?.editProduct.pageTitle,
+            errors: errors,
+            product: {
+                title: req?.body?.title,
+                imageUrl: req?.body?.imageUrl,
+                description: req?.body?.description,
+                price: req?.body?.price,
+                _id: req.body.id
+            }
+        });
+    }
     Product.updateOne({ _id: req.body.id, userId: req.user._id }, {
         title: req?.body?.title,
         price: req?.body?.price,

@@ -6,18 +6,40 @@ block styles
 
 block content 
     main
-        form.product-form(action=`${config.pages.addProduct.route}` method="POST")
+        include ../includes/error-message.pug
+        form.product-form(action=`${config.pages.addProduct.route}` method="POST" novalidate)
             input(type="hidden", name="_csrf" value=`${scrfToken}`)     
             div.form-control   
                 label(for="title") Title
-                input(type="text", name="title", required)#title
+                input(
+                    type="text",
+                    name="title",
+                    required,
+                    value=`${oldInput.title}`,
+                    class=`${errors.find(e => e.param === 'title') ? 'invalid' : ''}`
+                )#title
             div.form-control   
                 label(for="imageUrl") Image URL
-                input(type="text", name="imageUrl", required)#imageUrl    
+                input(
+                    type="text",
+                    name="imageUrl",
+                    required,
+                    value=`${oldInput.imageUrl}`,
+                    class=`${errors.find(e => e.param === 'imageUrl') ? 'invalid' : ''}`
+                )#imageUrl
             div.form-control   
                 label(for="price") Price
-                input(type="number", name="price", required)#price  
+                input(
+                    type="number",
+                    name="price",
+                    required,
+                    value=`${oldInput.price}`,
+                    class=`${errors.find(e => e.param === 'price') ? 'invalid' : ''}`
+                )#price  
             div.form-control   
                 label(for="description") Description 
-                textarea#description(name="description", rows="10")         
-            button.btn(type="submit") Add Product    
+                textarea#description(
+                    name="description",
+                    rows="10",
+                    class=`${errors.find(e => e.param === 'description') ? 'invalid' : ''}`) #{oldInput.description}        
+            button.btn(type="submit") Add Product  
