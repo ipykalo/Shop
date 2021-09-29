@@ -13,7 +13,7 @@ router.post(
     protectRoutes,
     [
         body('title').isLength({ min: 3 }).withMessage('Length of Title should be at least 3 characters.').trim(),
-        body('imageUrl', 'URL is not valid.').isURL(),
+        body('imageUrl', 'URL is not valid.').isURL().trim(),
         body('description', 'Description should not be more than 500 characters.').isLength({ max: 500 }).trim(),
         body('price', 'Price input is not valid.').isFloat()
     ],
@@ -26,7 +26,7 @@ router.post(
     routes.ADMIN_EDIT_PRODUCT,
     [
         body('title').isLength({ min: 3 }).withMessage('Length of Title should be at least 3 characters.').trim(),
-        body('imageUrl', 'URL is not valid.').isURL(),
+        body('imageUrl', 'URL is not valid.').isURL().trim(),
         body('description', 'Description should not be more than 500 characters.').isLength({ max: 500 }).trim(),
         body('price', 'Price input is not valid.').isFloat()
     ],
