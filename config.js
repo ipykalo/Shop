@@ -20,7 +20,9 @@ const ROUTES = {
     SIGNUP: '/signup',
     RESET_PASSWORD: '/reset',
     RESET_PASSWORD_TOKEN: '/reset/:token',
-    NEW_PASSWORD: '/new-password'
+    NEW_PASSWORD: '/new-password',
+    NOT_FOUND: '/404',
+    ERROR: '/500'
 }
 
 const PAGES = {
@@ -90,11 +92,6 @@ const PAGES = {
         menuItem: 'Edit Product',
         route: ROUTES.ADMIN_EDIT_PRODUCT
     },
-    notFound: {
-        view: '404',
-        pageTitle: 'Page Not Found',
-        route: ''
-    },
     login: {
         view: 'auth/login',
         pageTitle: 'Login',
@@ -124,6 +121,16 @@ const PAGES = {
         pageTitle: 'New Password',
         menuItem: 'New Password',
         route: ROUTES.NEW_PASSWORD
+    },
+    notFound: {
+        view: '404',
+        pageTitle: 'Page Not Found',
+        route: ROUTES.NOT_FOUND
+    },
+    error: {
+        view: '500',
+        pageTitle: 'Error',
+        route: ROUTES.ERROR
     }
 }
 

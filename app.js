@@ -21,6 +21,7 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
 const errorController = require('./controllers/error');
+const config = require('./config');
 /**
  * Dynamic templating engin (pug) configuration
  * To render file use this res.render('shop')
@@ -37,18 +38,6 @@ app.use(session({
     saveUninitialized: false
 }));
 
-app.use((req, res, next) => {
-    if (!req.session.user) {
-        return next();
-    }
-    User.findById(req.session.user._id)
-        .then(user => {
-            req.user = user;
-            next();
-        })
-        .catch(err => console.log(err, 'FindUser'));
-});
-
 //csrf token protection that will be added to every request
 app.use(csrf());
 //save error messages to the session
@@ -61,10 +50,33 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use((req, res, next) => {
+    if (!req.session.user) {
+        return next();
+    }
+    User.findById(req.session.user._id)
+        .then(user => {
+            if (!user) {
+                return next();
+            }
+            req.user = user;
+            next();
+        })
+        .catch(err => next(helper.logError(err, 'Set user to the request (App.js)')));
+});
+
 app.use(adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
 app.use(errorController.getNoteFoundPage);
+
+app.use((error, req, res, next) => {
+    res.render(config?.pages?.error?.view, {
+        config,
+        path: config?.pages?.error?.route,
+        pageTitle: config?.pages?.error?.pageTitle,
+    });
+});
 
 mongoose.connect(MONGO_DB_DRIVER)
     .then(() => app.listen(3000, () => console.log("Server is runing!")))

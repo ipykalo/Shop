@@ -2,6 +2,7 @@ const config = require('../config');
 const { validationResult } = require('express-validator');
 const Product = require('../models/product');
 const Order = require('../models/order');
+const helper = require('../util/helper');
 
 exports.getCreateProductForm = (req, res) => {
     res.render(config?.pages?.addProduct?.view, {
@@ -17,7 +18,7 @@ exports.getCreateProductForm = (req, res) => {
     });
 }
 
-exports.createProduct = (req, res) => {
+exports.createProduct = (req, res, next) => {
     const errors = validationResult(req).array();
     if (errors.length) {
         return res.status(422).render(config?.pages?.addProduct?.view, {
@@ -42,10 +43,10 @@ exports.createProduct = (req, res) => {
     })
         .save()
         .then(() => res.redirect(config.routes.INDEX))
-        .catch(err => console.log(err, 'createProduct'));
+        .catch(err => next(helper.logError(err, 'createProduct')));
 }
 
-exports.editProduct = (req, res) => {
+exports.editProduct = (req, res, next) => {
     Product.findById(req.params.id)
         .then(product => {
             res.render(config?.pages?.editProduct?.view, {
@@ -55,10 +56,10 @@ exports.editProduct = (req, res) => {
                 pageTitle: config?.pages?.editProduct?.pageTitle
             });
         })
-        .catch(err => console.log(err, 'editProduct'));
+        .catch(err => next(helper.logError(err, 'editProduct')));
 }
 
-exports.updateProduct = (req, res) => {
+exports.updateProduct = (req, res, next) => {
     const errors = validationResult(req).array();
     if (errors.length) {
         return res.status(422).render(config?.pages?.editProduct?.view, {
@@ -82,10 +83,10 @@ exports.updateProduct = (req, res) => {
         description: req?.body?.description
     })
         .then(() => res.redirect(config.routes.ADMIN_PRODUCTS))
-        .catch(err => console.log(err, 'updateProduct'));
+        .catch(err => next(helper.logError(err, 'updateProduct')));
 }
 
-exports.deleteProduct = (req, res) => {
+exports.deleteProduct = (req, res, next) => {
     Product
         .deleteOne({ _id: req.params.id, userId: req.user._id })
         .then(({ deletedCount }) => {
@@ -110,10 +111,10 @@ exports.deleteProduct = (req, res) => {
                 });
         })
         .then(() => res.redirect(config.routes.ADMIN_PRODUCTS))
-        .catch(err => console.log(err, 'deleteProduct'));
+        .catch(err => next(helper.logError(err, 'deleteProduct')));
 }
 
-exports.getProducts = (req, res) => {
+exports.getProducts = (req, res, next) => {
     Product.find({ userId: req.user._id })
         .then(products => {
             res.render(config?.pages?.products?.view, {
@@ -123,5 +124,5 @@ exports.getProducts = (req, res) => {
                 pageTitle: config?.pages?.products?.pageTitle
             });
         })
-        .catch(err => console.log(err, 'getProducts'));
+        .catch(err => next(helper.logError(err, 'getProducts')));
 }

@@ -18,7 +18,7 @@ exports.getLoginPage = (req, res) => {
     });
 }
 
-exports.login = (req, res) => {
+exports.login = (req, res, next) => {
     const errors = validationResult(req).array();
     if (errors.length) {
         return res.status(422).render(config?.pages?.login?.view, {
@@ -38,7 +38,7 @@ exports.login = (req, res) => {
             req.session.user = user;
             req.session.save(() => res.redirect('/'));
         })
-        .catch(err => console.log(err, 'login'));
+        .catch(err => next(helper.logError(err, 'login')));
 }
 
 exports.logout = (req, res) => {
@@ -58,7 +58,7 @@ exports.getSignupPage = (req, res) => {
     });
 }
 
-exports.signup = (req, res) => {
+exports.signup = (req, res, next) => {
     const errors = validationResult(req).array();
     if (errors.length) {
         return res.status(422).render(config?.pages?.signup?.view, {
@@ -83,7 +83,7 @@ exports.signup = (req, res) => {
                 .save()
                 .then(() => res.redirect(config.routes.LOGIN));
         })
-        .catch(err => console.log(err, 'signup'));
+        .catch(err => next(helper.logError(err, 'signup')));
 }
 
 exports.getResetPassPage = (req, res) => {
@@ -94,7 +94,7 @@ exports.getResetPassPage = (req, res) => {
     });
 }
 
-exports.resetPassword = (req, res) => {
+exports.resetPassword = (req, res, next) => {
     let token;
     crypto.randomBytes(32, (error, buffer) => {
         if (error) {
@@ -126,7 +126,7 @@ exports.resetPassword = (req, res) => {
             return user.save()
                 .then(() => res.redirect(config.routes.LOGIN));
         })
-        .catch(err => console.log(err, 'resetPassword'));
+        .catch(err => next(helper.logError(err, 'resetPassword')));
 }
 
 exports.getNewPassPage = (req, res) => {
@@ -146,7 +146,7 @@ exports.getNewPassPage = (req, res) => {
         });
 }
 
-exports.setNewPassword = (req, res) => {
+exports.setNewPassword = (req, res, next) => {
     User.findOne({
         _id: req.body.userId,
         resetToken: req.body.resetPassToken,
@@ -175,5 +175,5 @@ exports.setNewPassword = (req, res) => {
                 });
         })
         .then(() => res.redirect(config.routes.LOGIN))
-        .catch(err => console.log(err, 'setNewPassword'));
+        .catch(err => next(helper.logError(err, 'setNewPassword')));
 }

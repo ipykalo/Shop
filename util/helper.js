@@ -15,3 +15,10 @@ module.exports.getMailTransporter = () => {
         }
     });
 }
+
+module.exports.logError = (err, method) => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    console.log(`------${method}------`, err);
+    return error;
+}
