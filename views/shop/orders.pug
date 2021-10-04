@@ -6,10 +6,10 @@ block content
             ul 
                 each order in orders
                     li
-                        h1 Order: #{order._id}
+                        h1 Order: #{order._id} - 
+                            a(href=`${config.routes.ORDERS}/${order._id}`) Invoice
                             ul 
                                 each product in order.products
-                                    li #{product.product.title}(#{product.quantity}) - 
-                                        a(href=`${config.routes.ORDERS}/${order._id}`) Invoice
+                                    li #{product.product.title}(#{product.quantity})
         else 
             h1 No Orders 

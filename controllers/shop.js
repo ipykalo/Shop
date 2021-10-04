@@ -1,4 +1,5 @@
 const fs = require('fs');
+const pdfkit = require('pdfkit');
 
 const config = require('../config');
 const Product = require('../models/product');
@@ -115,11 +116,27 @@ exports.getInvoice = (req, res, next) => {
             if (!order || order.user.userId.toString() !== req.user._id.toString()) {
                 return next(helper.logError(`There is no order with orderId:${req.params.id}`, 'getInvoice'));
             }
-            const fileName = `invoice-${req.params.id}.pdf`;
-            const fileStream = fs.createReadStream(helper.getPath('data', 'invoices', fileName));
             res.setHeader('Content-Type', 'application/pdf');
             res.setHeader('Content-Disposition', 'inline');
-            fileStream.pipe(res);
+            const fileName = `invoice-${req.params.id}.pdf`;
+            const path = helper.getPath('data', 'invoices', fileName);
+            const pdf = new pdfkit();
+            pdf.pipe(fs.createWriteStream(path));
+            pdf.pipe(res);
+
+            pdf.fontSize(26).text('Invoice', {
+                underline: true
+            });
+            pdf.text('----------------------------------');
+
+            let totalPrice = 0;
+            order.products.forEach(pr => {
+                totalPrice += pr.quantity * pr.product.price;
+                pdf.fontSize(14).text(`${pr.product.title} - ${pr.quantity}; price: $${pr.product.price}`);
+            });
+            pdf.text('----------------------------------');
+            pdf.fontSize(20).text(`TOTAL PRICE: $${totalPrice}`);
+            pdf.end();
         })
         .catch(err => next(helper.logError(err, 'getInvoice')));
 }
