@@ -23,4 +23,6 @@ router.get(routes.ORDERS, protectRoutes, shopController.getOrders);
 
 router.post(routes.CREATE_ORDER, protectRoutes, shopController.createOrder);
 
+router.get(routes.INVOICE, protectRoutes, shopController.getInvoice);
+
 module.exports = router;

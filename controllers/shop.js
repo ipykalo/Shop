@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const config = require('../config');
 const Product = require('../models/product');
 const Order = require('../models/order');
@@ -105,4 +107,19 @@ exports.createOrder = (req, res, next) => {
         .then(() => req.user.clearCart())
         .then(() => res.redirect(config.routes.ORDERS))
         .catch(err => next(helper.logError(err, 'createOrder')));
+}
+
+exports.getInvoice = (req, res, next) => {
+    Order.findById(req.params.id)
+        .then(order => {
+            if (!order || order.user.userId.toString() !== req.user._id.toString()) {
+                return next(helper.logError(`There is no order with orderId:${req.params.id}`, 'getInvoice'));
+            }
+            const fileName = `invoice-${req.params.id}.pdf`;
+            const fileStream = fs.createReadStream(helper.getPath('data', 'invoices', fileName));
+            res.setHeader('Content-Type', 'application/pdf');
+            res.setHeader('Content-Disposition', 'inline');
+            fileStream.pipe(res);
+        })
+        .catch(err => next(helper.logError(err, 'getInvoice')));
 }

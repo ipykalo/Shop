@@ -1,6 +1,5 @@
 const path = require('path');
 const nodemailer = require('nodemailer');
-const { Module } = require('module');
 
 module.exports.getPath = (...paths) => path.join(path.dirname(require.main.filename), ...paths);
 

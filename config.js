@@ -6,6 +6,7 @@ const ROUTES = {
     CHECKOUT: '/checkout',
     CART: '/cart',
     ORDERS: '/orders',
+    INVOICE: '/orders/:id',
     CREATE_ORDER: '/create-order',
     ADD_TO_CART: '/add-to-cart',
     DELETE_FROM_CART: '/delete-from-cart',

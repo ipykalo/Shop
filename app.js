@@ -91,6 +91,7 @@ app.use((error, req, res, next) => {
     console.log(error, 'error')
     res.render(config?.pages?.error?.view, {
         config,
+        message: error?.message || '',
         path: config?.pages?.error?.route,
         pageTitle: config?.pages?.error?.pageTitle,
     });
