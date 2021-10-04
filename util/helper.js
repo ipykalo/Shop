@@ -1,5 +1,6 @@
 const path = require('path');
 const nodemailer = require('nodemailer');
+const { Module } = require('module');
 
 module.exports.getPath = (...paths) => path.join(path.dirname(require.main.filename), ...paths);
 
@@ -21,4 +22,11 @@ module.exports.logError = (err, method) => {
     error.httpStatusCode = 500;
     console.log(`------${method}------`, err);
     return error;
+}
+
+module.exports.isImage = (mimetype) => {
+    if (!mimetype) {
+        return false;
+    }
+    return ['image/png', 'image/jpg', 'image/jpeg'].includes(mimetype);
 }

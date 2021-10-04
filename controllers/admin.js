@@ -28,7 +28,6 @@ exports.createProduct = (req, res, next) => {
             errors: errors,
             oldInput: {
                 title: req?.body?.title,
-                imageUrl: req?.body?.imageUrl,
                 description: req?.body?.description,
                 price: req?.body?.price
             }
@@ -36,7 +35,7 @@ exports.createProduct = (req, res, next) => {
     }
     new Product({
         title: req?.body?.title,
-        imageUrl: req?.body?.imageUrl,
+        imageUrl: req?.file.path,
         description: req?.body?.description,
         price: req?.body?.price,
         userId: req?.session?.user?._id
@@ -69,19 +68,21 @@ exports.updateProduct = (req, res, next) => {
             errors: errors,
             product: {
                 title: req?.body?.title,
-                imageUrl: req?.body?.imageUrl,
                 description: req?.body?.description,
                 price: req?.body?.price,
                 _id: req.body.id
             }
         });
     }
-    Product.updateOne({ _id: req.body.id, userId: req.user._id }, {
+    const product = {
         title: req?.body?.title,
         price: req?.body?.price,
-        imageUrl: req?.body?.imageUrl,
         description: req?.body?.description
-    })
+    };
+    if (req?.file?.path) {
+        product.imageUrl = req.file.path;
+    }
+    Product.updateOne({ _id: req.body.id, userId: req.user._id }, product)
         .then(() => res.redirect(config.routes.ADMIN_PRODUCTS))
         .catch(err => next(helper.logError(err, 'updateProduct')));
 }

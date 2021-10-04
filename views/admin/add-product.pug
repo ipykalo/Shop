@@ -7,7 +7,7 @@ block styles
 block content 
     main
         include ../includes/error-message.pug
-        form.product-form(action=`${config.pages.addProduct.route}` method="POST" novalidate)
+        form.product-form(action=`${config.pages.addProduct.route}` method="POST" enctype="multipart/form-data" novalidate)
             input(type="hidden", name="_csrf" value=`${scrfToken}`)     
             div.form-control   
                 label(for="title") Title
@@ -19,14 +19,13 @@ block content
                     class=`${errors.find(e => e.param === 'title') ? 'invalid' : ''}`
                 )#title
             div.form-control   
-                label(for="imageUrl") Image URL
+                label(for="image") Image
                 input(
-                    type="text",
-                    name="imageUrl",
+                    type="file",
+                    name="image",
                     required,
-                    value=`${oldInput.imageUrl}`,
-                    class=`${errors.find(e => e.param === 'imageUrl') ? 'invalid' : ''}`
-                )#imageUrl
+                    class=`${errors.find(e => e.param === 'image') ? 'invalid' : ''}`
+                )#image
             div.form-control   
                 label(for="price") Price
                 input(

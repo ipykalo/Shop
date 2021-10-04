@@ -4,6 +4,7 @@ const session = require('express-session');
 const MongoDbStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
+const multer = require('multer');
 
 const MONGO_DB_DRIVER = 'mongodb+srv://ipyka:hV2VuDQK9NoUEQGI@cluster0.buupe.mongodb.net/shop';
 const SECRET_SESSION_KEY = 'secret-santa';
@@ -22,6 +23,7 @@ const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
 const errorController = require('./controllers/error');
 const config = require('./config');
+
 /**
  * Dynamic templating engin (pug) configuration
  * To render file use this res.render('shop')
@@ -31,12 +33,27 @@ app.set('views', 'views');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(helper.getPath('public'))); //Serving static files (CSS)
+app.use('/images', express.static(helper.getPath('images'))); //Serving static files (images)
 app.use(session({
     store,
     secret: SECRET_SESSION_KEY,
     resave: false,
     saveUninitialized: false
 }));
+
+const fileStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'images');
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, file.fieldname + '-' + uniqueSuffix);
+    }
+});
+const fileFilter = (req, file, cb) => {
+    helper.isImage(file.mimetype) ? cb(null, true) : cb(null, false);
+}
+app.use(multer({ storage: fileStorage, fileFilter }).single('image'));
 
 //csrf token protection that will be added to every request
 app.use(csrf());
@@ -71,6 +88,7 @@ app.use(authRoutes);
 app.use(errorController.getNoteFoundPage);
 
 app.use((error, req, res, next) => {
+    console.log(error, 'error')
     res.render(config?.pages?.error?.view, {
         config,
         path: config?.pages?.error?.route,
