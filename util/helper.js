@@ -1,5 +1,6 @@
 const path = require('path');
 const nodemailer = require('nodemailer');
+const fs = require('fs');
 
 module.exports.getPath = (...paths) => path.join(path.dirname(require.main.filename), ...paths);
 
@@ -28,4 +29,12 @@ module.exports.isImage = (mimetype) => {
         return false;
     }
     return ['image/png', 'image/jpg', 'image/jpeg'].includes(mimetype);
+}
+
+module.exports.deleteFile = (url) => {
+    fs.unlink(url, err => {
+        if (err) {
+            throw this.logError(err, 'deleteFile');
+        }
+    });
 }

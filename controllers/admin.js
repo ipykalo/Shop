@@ -74,41 +74,50 @@ exports.updateProduct = (req, res, next) => {
             }
         });
     }
-    const product = {
-        title: req?.body?.title,
-        price: req?.body?.price,
-        description: req?.body?.description
-    };
-    if (req?.file?.path) {
-        product.imageUrl = req.file.path;
-    }
-    Product.updateOne({ _id: req.body.id, userId: req.user._id }, product)
+    Product.findOne({ _id: req.body.id, userId: req.user._id })
+        .then(prod => {
+            prod.title = req?.body?.title;
+            prod.price = req?.body?.price;
+            prod.description = req?.body?.description;
+
+            if (req?.file?.path) {
+                helper.deleteFile(prod?.imageUrl);
+                prod.imageUrl = req.file.path;
+            }
+            return prod.save();
+        })
         .then(() => res.redirect(config.routes.ADMIN_PRODUCTS))
         .catch(err => next(helper.logError(err, 'updateProduct')));
 }
 
 exports.deleteProduct = (req, res, next) => {
     Product
-        .deleteOne({ _id: req.params.id, userId: req.user._id })
-        .then(({ deletedCount }) => {
-            if (deletedCount === 0) {
-                return;
+        .findOne({ _id: req.params.id, userId: req.user._id })
+        .then(prod => {
+            if (!prod) {
+                throw new Error(`There is no product with id: ${req.params.id}`);
             }
-            return Order.find({ 'user.userId': req.user._id })
-                .then(orders => {
-                    for (let i = 0; i < orders.length; i++) {
-                        orders[i].products.forEach((item, index, arr) => {
-                            if (item.product._id.toString() === req.params.id.toString()) {
-                                arr.splice(index, 1);
+            return Product.deleteOne({ _id: prod._id })
+                .then(() => {
+                    helper.deleteFile(prod?.imageUrl);
+
+                    return Order.find({ 'user.userId': req.user._id })
+                        .then(orders => {
+                            const promises = [];
+                            for (let order of orders) {
+                                order.products.forEach((item, index, arr) => {
+                                    if (item.product._id.toString() === req.params.id.toString()) {
+                                        arr.splice(index, 1);
+                                    }
+                                });
+                                if (!order.products.length) {
+                                    promises.push(Order.deleteOne({ _id: order._id }));
+                                } else {
+                                    promises.push(order.save());
+                                }
                             }
+                            return Promise.all(promises);
                         });
-                        if (!orders[i].products.length) {
-                            orders.splice(i, 1);
-                            --i;
-                        }
-                    }
-                    return Order.collection.drop()
-                        .then(() => Order.insertMany(orders));
                 });
         })
         .then(() => res.redirect(config.routes.ADMIN_PRODUCTS))
