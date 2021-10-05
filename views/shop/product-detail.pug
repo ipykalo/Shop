@@ -9,7 +9,8 @@ block content
         h1 #{product.title}
         hr
         div 
-            img(src=`${product.imageUrl}`, alt=`${product.title}`)
+            img(src=`/${product.imageUrl}`, alt=`${product.title}`)
         h2 #{product.price}$    
         p #{product.description}
-        include ../includes/add-to-card.pug
+            if isLoggedIn 
+                include ../includes/add-to-card.pug

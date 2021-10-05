@@ -6,6 +6,7 @@ const ROUTES = {
     CHECKOUT: '/checkout',
     CART: '/cart',
     ORDERS: '/orders',
+    INVOICE: '/orders/:id',
     CREATE_ORDER: '/create-order',
     ADD_TO_CART: '/add-to-cart',
     DELETE_FROM_CART: '/delete-from-cart',
@@ -14,7 +15,15 @@ const ROUTES = {
     ADMIN_EDIT_PRODUCT: '/admin/edit-product',
     ADMIN_EDIT_PRODUCT_ID: '/admin/edit-product/:id',
     ADMIN_DELETE_PRODUCT: '/admin/delete-product',
-    ADMIN_DELETE_PRODUCT_ID: '/admin/delete-product/:id'
+    ADMIN_DELETE_PRODUCT_ID: '/admin/delete-product/:id',
+    LOGIN: '/login',
+    LOGOUT: '/logout',
+    SIGNUP: '/signup',
+    RESET_PASSWORD: '/reset',
+    RESET_PASSWORD_TOKEN: '/reset/:token',
+    NEW_PASSWORD: '/new-password',
+    NOT_FOUND: '/404',
+    ERROR: '/500'
 }
 
 const PAGES = {
@@ -84,10 +93,45 @@ const PAGES = {
         menuItem: 'Edit Product',
         route: ROUTES.ADMIN_EDIT_PRODUCT
     },
+    login: {
+        view: 'auth/login',
+        pageTitle: 'Login',
+        menuItem: 'Login',
+        route: ROUTES.LOGIN
+    },
+    logout: {
+        view: '',
+        pageTitle: '',
+        menuItem: 'Logout',
+        route: ROUTES.LOGOUT
+    },
+    signup: {
+        view: 'auth/signup',
+        pageTitle: 'Signup',
+        menuItem: 'Signup',
+        route: ROUTES.SIGNUP
+    },
+    resetPassword: {
+        view: 'auth/reset-password',
+        pageTitle: 'Reset Password',
+        menuItem: 'Reset Password',
+        route: ROUTES.RESET_PASSWORD
+    },
+    newPassword: {
+        view: 'auth/new-password',
+        pageTitle: 'New Password',
+        menuItem: 'New Password',
+        route: ROUTES.NEW_PASSWORD
+    },
     notFound: {
         view: '404',
         pageTitle: 'Page Not Found',
-        route: ''
+        route: ROUTES.NOT_FOUND
+    },
+    error: {
+        view: '500',
+        pageTitle: 'Error',
+        route: ROUTES.ERROR
     }
 }
 

@@ -6,18 +6,38 @@ block styles
 
 block content 
     main
-        form.product-form(action=`${config.pages.editProduct.route}` method="post")    
+        include ../includes/error-message.pug
+        form.product-form(action=`${config.pages.editProduct.route}` method="post" enctype="multipart/form-data" novalidate)
+            input(type="hidden", name="_csrf" value=`${scrfToken}`)     
             div.form-control   
                 label(for="title") Title
-                input(type="text", name="title", value=`${product.title}` required)#title
+                input(
+                    type="text", 
+                    name="title", 
+                    value=`${product.title}`,
+                    class=`${errors.find(e => e.param === 'title') ? 'invalid' : ''}`
+                )#title
             div.form-control   
-                label(for="imageUrl") Image URL
-                input(type="text", name="imageUrl", value=`${product.imageUrl}` required)#imageUrl    
+                label(for="image") Image
+                input(
+                    type="file",
+                    name="image",
+                    class=`${errors.find(e => e.param === 'image') ? 'invalid' : ''}`
+                )#image    
             div.form-control   
                 label(for="price") Price
-                input(type="number", name="price", value=`${product.price}` required)#price  
+                input(
+                    type="number", 
+                    name="price", 
+                    value=`${product.price}`,
+                    class=`${errors.find(e => e.param === 'price') ? 'invalid' : ''}`
+                )#price  
             div.form-control   
                 label(for="description") Description 
-                textarea#description(name="description", rows="10") #{product.description}
+                textarea#description(
+                    name="description", 
+                    rows="10",
+                    class=`${errors.find(e => e.param === 'description') ? 'invalid' : ''}`
+                ) #{product.description}
             input(type="hidden", name="id", value=`${product._id}`)             
             button.btn(type="submit") Save

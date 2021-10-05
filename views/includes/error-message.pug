@@ -1,0 +1,5 @@
+if errors.length
+    div
+        each error in errors
+            div.error-box
+                span.error #{error.msg || error} 

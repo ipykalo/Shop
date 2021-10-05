@@ -28,8 +28,10 @@ main {
 
 .main-header__nav {
   height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .main-header__item-list {
@@ -106,8 +108,23 @@ main {
   padding: 5px 10px;
 }
 
+.btn-auth {
+  border: 1px solid #00695c;
+  color: #00695c;
+  background: white;
+  border-radius: 3px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
 button.cart {
   padding: 2px;
+}
+
+.btn-auth:hover,
+.btn-auth:active {
+  background-color: #60c460;
+  color: rgb(255, 255, 255);
 }
 
 .btn:hover,
@@ -128,4 +145,21 @@ a {
 
 p {
   word-break: break-word;
+}
+
+.error-box {
+  margin-left: auto;
+  margin-right: auto;
+  width: 30%;
+  background-color: #e22c2cb8;
+  border: 2px solid #ff3131;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.error-box .error {
+  display: block;
+  padding: 15px 10px;
+  color: white;
+  text-align: center;
 }
