@@ -41,19 +41,23 @@ app.use(session({
     saveUninitialized: false
 }));
 
-const fileStorage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'images');
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, file.fieldname + '-' + uniqueSuffix);
-    }
-});
-const fileFilter = (req, file, cb) => {
-    helper.isImage(file.mimetype) ? cb(null, true) : cb(null, false);
-}
-app.use(multer({ storage: fileStorage, fileFilter }).single('image'));
+app.use(
+    multer({
+        storage: multer.diskStorage({
+            destination: function (req, file, cb) {
+                cb(null, 'images');
+            },
+            filename: function (req, file, cb) {
+                const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+                cb(null, file.fieldname + '-' + uniqueSuffix);
+            }
+        }),
+        fileFilter: (req, file, cb) => {
+            helper.isImage(file.mimetype) ? cb(null, true) : cb(null, false);
+        }
+    })
+        .single('image')
+);
 
 //csrf token protection that will be added to every request
 app.use(csrf());
