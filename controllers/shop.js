@@ -137,6 +137,8 @@ exports.getInvoice = (req, res, next) => {
             pdf.text('----------------------------------');
             pdf.fontSize(20).text(`TOTAL PRICE: $${totalPrice}`);
             pdf.end();
+            order.invoiceUrl = path;
+            order.save();
         })
         .catch(err => next(helper.logError(err, 'getInvoice')));
 }

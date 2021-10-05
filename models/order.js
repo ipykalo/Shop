@@ -15,6 +15,10 @@ const Order = new mongoose.Schema({
             require: true,
             ref: 'User'
         }
+    },
+    invoiceUrl: {
+        type: String,
+        required: false
     }
 });
 

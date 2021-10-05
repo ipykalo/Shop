@@ -111,6 +111,7 @@ exports.deleteProduct = (req, res, next) => {
                                     }
                                 });
                                 if (!order.products.length) {
+                                    helper.deleteFile(order?.invoiceUrl);
                                     promises.push(Order.deleteOne({ _id: order._id }));
                                 } else {
                                     promises.push(order.save());
