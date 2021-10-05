@@ -34,11 +34,16 @@ app.set('views', 'views');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(helper.getPath('public'))); //Serving static files (CSS)
 app.use('/images', express.static(helper.getPath('images'))); //Serving static files (images)
+
 app.use(session({
     store,
     secret: SECRET_SESSION_KEY,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+        expires: new Date(Date.now() + 3600000),
+        maxAge: 3600000
+    }
 }));
 
 app.use(
@@ -83,7 +88,7 @@ app.use((req, res, next) => {
             req.user = user;
             next();
         })
-        .catch(err => next(helper.logError(err, 'Set user to the request (App.js)')));
+        .catch(err => next(helper.logError(err, 'Unable to set user to the request (App.js)')));
 });
 
 app.use(adminRoutes);
