@@ -10,8 +10,6 @@ const ITEMS_PER_PAGE = 2;
 
 exports.getProducts = (req, res, next) => {
     const page = +req.query.page || 1;
-
-    console.log(res.locals.totalProducts, 'res.locals.totalProducts')
     Product.find()
         .countDocuments()
         .then(totalRecords => {
