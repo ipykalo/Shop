@@ -6,6 +6,8 @@ const Product = require('../models/product');
 const Order = require('../models/order');
 const helper = require('../util/helper');
 
+const ITEMS_PER_PAGE = 2;
+
 exports.getProducts = (req, res, next) => {
     Product.find()
         .then(products => {
@@ -33,14 +35,24 @@ exports.getProduct = (req, res, next) => {
 }
 
 exports.getIndex = (req, res, next) => {
+    const page = +req.query.page || 1;
     Product.find()
-        .then(products => {
-            res.render(config?.pages?.index?.view, {
-                config,
-                products: products,
-                path: config?.pages?.index?.route,
-                pageTitle: config?.pages?.index?.pageTitle
-            });
+        .countDocuments()
+        .then(totalRecords => {
+            return Product.find()
+                .skip((page - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE)
+                .then(products => {
+                    res.render(config?.pages?.index?.view, {
+                        config,
+                        products: products,
+                        path: config?.pages?.index?.route,
+                        pageTitle: config?.pages?.index?.pageTitle,
+                        currentPage: page,
+                        hasNextPage: ITEMS_PER_PAGE * page < totalRecords,
+                        lastPage: Math.ceil(totalRecords / ITEMS_PER_PAGE)
+                    });
+                })
         })
         .catch(err => next(helper.logError(err, 'getIndex')));
 }
