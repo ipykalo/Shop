@@ -62,6 +62,7 @@ main {
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: stretch;
+  gap: 20px;
 }
 
 .card {

@@ -21,5 +21,6 @@ block content
                                 a.btn(href=`${config.routes.PRODUCT_DETAIL}/${product._id}`) Product Detail
                                 if isLoggedIn 
                                     include ../includes/add-to-card.pug
+            include ../includes/pagination.pug                    
         else 
             h1 No Products!

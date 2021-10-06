@@ -9,14 +9,26 @@ const helper = require('../util/helper');
 const ITEMS_PER_PAGE = 2;
 
 exports.getProducts = (req, res, next) => {
+    const page = +req.query.page || 1;
+
+    console.log(res.locals.totalProducts, 'res.locals.totalProducts')
     Product.find()
-        .then(products => {
-            res.render(config?.pages?.productList?.view, {
-                config,
-                products: products,
-                path: config?.pages?.productList?.route,
-                pageTitle: config?.pages?.productList?.pageTitle
-            });
+        .countDocuments()
+        .then(totalRecords => {
+            return Product.find()
+                .skip((page - 1) * ITEMS_PER_PAGE)
+                .limit(ITEMS_PER_PAGE)
+                .then(products => {
+                    res.render(config?.pages?.productList?.view, {
+                        config,
+                        products: products,
+                        path: config?.pages?.productList?.route,
+                        pageTitle: config?.pages?.productList?.pageTitle,
+                        currentPage: page,
+                        hasNextPage: ITEMS_PER_PAGE * page < totalRecords,
+                        lastPage: Math.ceil(totalRecords / ITEMS_PER_PAGE)
+                    });
+                })
         })
         .catch(err => next(helper.logError(err, 'getProducts')));
 }
