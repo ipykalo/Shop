@@ -15,8 +15,9 @@ block content
                             input(type="hidden" name="id" value=`${product.productId._id}`)
                             button.btn.cart Delete  
                 hr                    
-                form(action=`${config.routes.CREATE_ORDER}`, method="post")
-                    input(type="hidden", name="_csrf" value=`${scrfToken}`) 
-                    button.btn(type="submit") Create Order                               
+                //- form(action=`${config.routes.CREATE_ORDER}`, method="post")
+                //-     input(type="hidden", name="_csrf" value=`${scrfToken}`) 
+                //-     button.btn(type="submit") Create Order   
+                a.btn(href=`${config.routes.CHECKOUT}`) Order now                        
         else 
             h1 No Products in the Cart   

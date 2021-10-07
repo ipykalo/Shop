@@ -1,4 +1,13 @@
 extends ../layouts/main.pug
 
 block content 
-    h1 Checkout
+    main 
+        if products.length > 0
+            ul 
+                each product in products
+                    li.cart
+                        p #{product.productId.title} (#{product.quantity})
+            div
+                h2 Total: $#{totalSum}                               
+        else 
+            h1 No Products in the Cart 

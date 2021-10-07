@@ -70,6 +70,7 @@ exports.getIndex = (req, res, next) => {
 exports.getCart = (req, res, next) => {
     req.user.populate('cart.items.productId')
         .then(products => {
+            console.log(products.cart.items, 'products.cart.items')
             res.render(config?.pages?.cart?.view, {
                 config,
                 products: products.cart.items,
@@ -93,12 +94,21 @@ exports.deleteFromCart = (req, res, next) => {
         .catch(err => next(helper.logError(err, 'deleteFromCart')));
 }
 
-exports.getCheckout = (req, res) => {
-    res.render(config?.pages?.checkout?.view, {
-        config,
-        path: config?.pages?.checkout?.route,
-        pageTitle: config?.pages?.checkout?.pageTitle
-    });
+exports.getCheckout = (req, res, next) => {
+    req.user.populate('cart.items.productId')
+        .then(products => {
+            let totalSum  = 0;
+            console.log(products.cart.items, 'products')
+            products.cart.items.forEach(pr => totalSum += pr.quantity * pr.productId.price);
+            res.render(config?.pages?.checkout?.view, {
+                config,
+                totalSum,
+                products: products.cart.items,
+                path: config?.pages?.checkout?.route,
+                pageTitle: config?.pages?.checkout?.pageTitle
+            });
+        })
+        .catch(err => next(helper.logError(err, 'getCart')));
 }
 
 exports.getOrders = (req, res, next) => {
