@@ -32,7 +32,7 @@ app.set('view engine', 'pug');
 app.set('views', 'views');
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(helper.getPath('public'))); //Serving static files (CSS)
+app.use(express.static(helper.getPath('public'))); //Serving static files (CSS, JS)
 app.use('/images', express.static(helper.getPath('images'))); //Serving static files (images)
 
 app.use(session({

@@ -121,7 +121,7 @@ exports.deleteProduct = (req, res, next) => {
                         });
                 });
         })
-        .then(() => res.redirect(config.routes.ADMIN_PRODUCTS))
+        .then(() => res.status(200).json({ message: 'Success!' }))
         .catch(err => next(helper.logError(err, 'deleteProduct')));
 }
 

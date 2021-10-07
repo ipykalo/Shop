@@ -2,13 +2,12 @@ extends ../layouts/main.pug
 
 block styles 
     link(rel="stylesheet", href="/css/product.css")
-
-block content 
+block content
     main
         if products.length > 0
             div.grid
-                each product in products
-                    article.card.product-item
+                each product, index in products
+                    article.card.product-item(id=`${product._id}`)
                         header.card__header
                             h1.product__title #{product.title}
                         div.card__image
@@ -18,6 +17,8 @@ block content
                             p.product__description #{product.description}
                         div.card__actions
                             a.btn(href=`${config.routes.ADMIN_EDIT_PRODUCT}/${product._id}`) Edit
-                            a.btn(href=`${config.routes.ADMIN_DELETE_PRODUCT}/${product._id}`) Delete
+                            a.btn(onclick=`onDeleteProduct('${product._id}', '${config.routes.ADMIN_DELETE_PRODUCT}', '${scrfToken}')`) Delete
         else 
             h1 No Products!
+block scripts
+    script(src="/js/admin.js")                    

@@ -55,6 +55,6 @@ router.post(
 
 router.get(routes.ADMIN_PRODUCTS, protectRoutes, adminController.getProducts);
 
-router.get(routes.ADMIN_DELETE_PRODUCT_ID, protectRoutes, adminController.deleteProduct);
+router.delete(routes.ADMIN_DELETE_PRODUCT_ID, protectRoutes, adminController.deleteProduct);
 
 module.exports = router;
