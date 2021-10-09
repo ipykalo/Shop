@@ -4,10 +4,11 @@ const ROUTES = {
     PRODUCT_DETAIL: '/product-detail',
     PRODUCT_DETAIL_ID: '/product-detail/:id',
     CHECKOUT: '/checkout',
+    CHECKOUT_SUCCESS: '/checkout/success',
+    CHECKOUT_CANCEL: '/checkout/cancel',
     CART: '/cart',
     ORDERS: '/orders',
     INVOICE: '/orders/:id',
-    CREATE_ORDER: '/create-order',
     ADD_TO_CART: '/add-to-cart',
     DELETE_FROM_CART: '/delete-from-cart',
     ADMIN_PRODUCTS: '/admin/products',
@@ -68,12 +69,6 @@ const PAGES = {
         pageTitle: 'Shop',
         menuItem: 'Orders',
         route: ROUTES.ORDERS
-    },
-    createOrder: {
-        view: 'shop/orders',
-        pageTitle: 'Shop',
-        menuItem: 'Create Order',
-        route: ROUTES.CREATE_ORDER
     },
     products: {
         view: 'admin/products',
@@ -140,5 +135,9 @@ module.exports = {
     pages: PAGES,
     classes: {
         active: 'active'
+    },
+    stripe: {
+        pk: 'pk_test_51JhxuoLpj59ish9M0uRPONR2nAg3Z99opnT4yJxjSzZOtObtUfwAXzVjH4Rwyndx2OSXsExfUiqdphGSW9Qzsz3y00fZQUlbop',
+        sk: 'sk_test_51JhxuoLpj59ish9MzW4DnVcPMw985ZkI7hrHpwwOnhO0M1uTMy6X7DFNZlgwZVIDy00K94ngzmx8EGna6fcqk1ur00wG1BLdaJ'
     }
 }

@@ -5,6 +5,7 @@ const config = require('../config');
 const Product = require('../models/product');
 const Order = require('../models/order');
 const helper = require('../util/helper');
+const stripe = require('stripe')(config.stripe.sk);
 
 const ITEMS_PER_PAGE = 2;
 
@@ -70,7 +71,6 @@ exports.getIndex = (req, res, next) => {
 exports.getCart = (req, res, next) => {
     req.user.populate('cart.items.productId')
         .then(products => {
-            console.log(products.cart.items, 'products.cart.items')
             res.render(config?.pages?.cart?.view, {
                 config,
                 products: products.cart.items,
@@ -95,20 +95,41 @@ exports.deleteFromCart = (req, res, next) => {
 }
 
 exports.getCheckout = (req, res, next) => {
+    let totalSum = 0;
+    let products = [];
     req.user.populate('cart.items.productId')
-        .then(products => {
-            let totalSum  = 0;
-            console.log(products.cart.items, 'products')
-            products.cart.items.forEach(pr => totalSum += pr.quantity * pr.productId.price);
+        .then(pr => {
+            products = pr.cart.items.map(item => {
+                totalSum += item.quantity * item.productId.price;
+                return item;
+            });
+            return stripe.checkout.sessions.create({
+                line_items: products.map(item => {
+                    return {
+                        name: item.productId.title,
+                        description: item.productId.description,
+                        amount: item.productId.price * 100,
+                        currency: 'usd',
+                        quantity: item.quantity
+                    };
+                }),
+                payment_method_types: ['card'],
+                mode: 'payment',
+                success_url: `${req.protocol}://${req.get('host')}${config.routes.CHECKOUT_SUCCESS}`,
+                cancel_url: `${req.protocol}://${req.get('host')}${config.routes.CHECKOUT_CANCEL}`
+            });
+        })
+        .then(session => {
             res.render(config?.pages?.checkout?.view, {
                 config,
                 totalSum,
-                products: products.cart.items,
+                products,
                 path: config?.pages?.checkout?.route,
-                pageTitle: config?.pages?.checkout?.pageTitle
+                pageTitle: config?.pages?.checkout?.pageTitle,
+                sessionId: session.id
             });
         })
-        .catch(err => next(helper.logError(err, 'getCart')));
+        .catch(err => next(helper.logError(err, 'getCheckout')));
 }
 
 exports.getOrders = (req, res, next) => {

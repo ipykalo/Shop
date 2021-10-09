@@ -8,6 +8,11 @@ block content
                     li.cart
                         p #{product.productId.title} (#{product.quantity})
             div
-                h2 Total: $#{totalSum}                               
+                h2 Total: $#{totalSum} 
+            button.btn(type="button" onclick=`onCheckout('${sessionId}', '${config.stripe.pk}')`) Create Order                            
         else 
-            h1 No Products in the Cart 
+            h1 No Products in the Cart
+block scripts
+    <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    script(src="/js/checkout.js")

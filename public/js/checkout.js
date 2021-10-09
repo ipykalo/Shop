@@ -1,0 +1,1 @@
+const onCheckout = (sessionId, key) => Stripe(key)?.redirectToCheckout({ sessionId });

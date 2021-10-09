@@ -19,9 +19,11 @@ router.post(routes.DELETE_FROM_CART, protectRoutes, shopController.deleteFromCar
 
 router.get(routes.CHECKOUT, protectRoutes, shopController.getCheckout);
 
-router.get(routes.ORDERS, protectRoutes, shopController.getOrders);
+router.get(routes.CHECKOUT_SUCCESS, protectRoutes, shopController.createOrder);
 
-router.post(routes.CREATE_ORDER, protectRoutes, shopController.createOrder);
+router.get(routes.CHECKOUT_CANCEL, protectRoutes, shopController.getCheckout);
+
+router.get(routes.ORDERS, protectRoutes, shopController.getOrders);
 
 router.get(routes.INVOICE, protectRoutes, shopController.getInvoice);
 
