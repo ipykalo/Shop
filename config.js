@@ -137,7 +137,7 @@ module.exports = {
         active: 'active'
     },
     stripe: {
-        pk: 'pk_test_51JhxuoLpj59ish9M0uRPONR2nAg3Z99opnT4yJxjSzZOtObtUfwAXzVjH4Rwyndx2OSXsExfUiqdphGSW9Qzsz3y00fZQUlbop',
-        sk: 'sk_test_51JhxuoLpj59ish9MzW4DnVcPMw985ZkI7hrHpwwOnhO0M1uTMy6X7DFNZlgwZVIDy00K94ngzmx8EGna6fcqk1ur00wG1BLdaJ'
+        pk: process.env.STRIPE_PK,
+        sk: process.env.STRIPE_SK
     }
 }

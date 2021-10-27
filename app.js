@@ -6,8 +6,7 @@ const csrf = require('csurf');
 const flash = require('connect-flash');
 const multer = require('multer');
 
-const MONGO_DB_DRIVER = 'mongodb+srv://ipyka:hV2VuDQK9NoUEQGI@cluster0.buupe.mongodb.net/shop';
-const SECRET_SESSION_KEY = 'secret-santa';
+const MONGO_DB_DRIVER = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.buupe.mongodb.net/${process.env.DATABASE}`;
 
 const app = express();
 const store = new MongoDbStore({
@@ -37,7 +36,7 @@ app.use('/images', express.static(helper.getPath('images'))); //Serving static f
 
 app.use(session({
     store,
-    secret: SECRET_SESSION_KEY,
+    secret: process.env.SECRET_SESSION_KEY,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -107,5 +106,5 @@ app.use((error, req, res, next) => {
 });
 
 mongoose.connect(MONGO_DB_DRIVER)
-    .then(() => app.listen(3000, () => console.log("Server is runing!")))
+    .then(() => app.listen(process.env.PORT || 3000, () => console.log("Server is runing!")))
     .catch(err => console.log(err, 'db connection'));
