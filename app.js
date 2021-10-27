@@ -5,6 +5,7 @@ const MongoDbStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
 const multer = require('multer');
+const helmet = require('helmet');
 
 const MONGO_DB_DRIVER = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.buupe.mongodb.net/${process.env.DATABASE}`;
 
@@ -29,6 +30,9 @@ const config = require('./config');
  */
 app.set('view engine', 'pug');
 app.set('views', 'views');
+
+//Helmet helps to secure Express apps by setting various HTTP headers.
+app.use(helmet());
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(helper.getPath('public'))); //Serving static files (CSS, JS)

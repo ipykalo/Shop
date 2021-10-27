@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "ng test",
-    "start": "nodemon app.js"
+    "start": "USER=ipyka PASSWORD=hV2VuDQK9NoUEQGI DATABASE=shop SECRET_SESSION_KEY=secret-santa STRIPE_PK=pk_test_51JhxuoLpj59ish9M0uRPONR2nAg3Z99opnT4yJxjSzZOtObtUfwAXzVjH4Rwyndx2OSXsExfUiqdphGSW9Qzsz3y00fZQUlbop STRIPE_SK=sk_test_51JhxuoLpj59ish9MzW4DnVcPMw985ZkI7hrHpwwOnhO0M1uTMy6X7DFNZlgwZVIDy00K94ngzmx8EGna6fcqk1ur00wG1BLdaJ node app.js",
+    "start-server": "node app.js",
+    "start-dev": "nodemon app.js"
   },
   "author": "Ivan Pykalo",
   "license": "ISC",
@@ -17,6 +19,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "express-validator": "^6.12.1",
+    "helmet": "^4.6.0",
     "mongodb": "^4.0.1",
     "mongoose": "^6.0.2",
     "multer": "^1.4.3",
