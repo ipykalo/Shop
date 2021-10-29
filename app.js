@@ -118,13 +118,10 @@ app.use((error, req, res, next) => {
 mongoose.connect(MONGO_DB_DRIVER)
     .then(() => {
         //app.listen(process.env.PORT || 3000, () => console.log("Server is runing!"))
-        https.createServer(
-            {
-                key: fs.readFileSync(path.join(__dirname, 'ssl', 'key.pem')),
-                cert: fs.readFileSync(path.join(__dirname, 'ssl', 'cert.pem'))
-            },
-            app
-        )
+        https.createServer({
+            key: fs.readFileSync(path.join(__dirname, 'ssl', 'key.pem')),
+            cert: fs.readFileSync(path.join(__dirname, 'ssl', 'cert.pem'))
+        }, app)
             .listen(process.env.PORT || 3000, () => console.log("Server is runing!"));
     })
     .catch(err => console.log(err, 'db connection'));
