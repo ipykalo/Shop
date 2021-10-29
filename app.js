@@ -7,9 +7,9 @@ const flash = require('connect-flash');
 const multer = require('multer');
 const helmet = require('helmet');
 const compression = require('compression');
-const morgan = require('morgan');
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
 
 const MONGO_DB_DRIVER = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.buupe.mongodb.net/${process.env.DATABASE}`;
 
@@ -39,11 +39,6 @@ app.set('views', 'views');
 app.use(helmet());
 // The middleware will attempt to compress response bodies for all request that traverse through the middleware, based on the given options.
 app.use(compression());
-
-//HTTP request logger middleware
-app.use(morgan('combined', {
-    stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
-}));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(helper.getPath('public'))); //Serving static files (CSS, JS)
@@ -121,5 +116,15 @@ app.use((error, req, res, next) => {
 });
 
 mongoose.connect(MONGO_DB_DRIVER)
-    .then(() => app.listen(process.env.PORT || 3000, () => console.log("Server is runing!")))
+    .then(() => {
+        //app.listen(process.env.PORT || 3000, () => console.log("Server is runing!"))
+        https.createServer(
+            {
+                key: fs.readFileSync(path.join(__dirname, 'ssl', 'key.pem')),
+                cert: fs.readFileSync(path.join(__dirname, 'ssl', 'cert.pem'))
+            },
+            app
+        )
+            .listen(process.env.PORT || 3000, () => console.log("Server is runing!"));
+    })
     .catch(err => console.log(err, 'db connection'));
