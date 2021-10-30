@@ -2,12 +2,13 @@
   "name": "shop",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "server.js",
   "engines": {
     "node": "14.16.0"
   },
   "scripts": {
-    "start-server": "nodemon app.js"
+    "start": "node server.js",
+    "start-server": "nodemon server.js"
   },
   "author": "Ivan Pykalo",
   "license": "ISC",

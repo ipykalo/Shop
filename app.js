@@ -1,5 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const session = require('express-session');
 const MongoDbStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
@@ -7,15 +6,11 @@ const flash = require('connect-flash');
 const multer = require('multer');
 const helmet = require('helmet');
 const compression = require('compression');
-const fs = require('fs');
-const path = require('path');
-const https = require('https');
-
-const MONGO_DB_DRIVER = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.buupe.mongodb.net/${process.env.DATABASE}`;
+const config = require('./config');
 
 const app = express();
 const store = new MongoDbStore({
-    uri: MONGO_DB_DRIVER,
+    uri: config.MONGO_DB_DRIVER,
     collection: 'sessions'
 });
 
@@ -26,7 +21,6 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
 const errorController = require('./controllers/error');
-const config = require('./config');
 
 /**
  * Dynamic templating engin (pug) configuration
@@ -115,13 +109,4 @@ app.use((error, req, res, next) => {
     });
 });
 
-mongoose.connect(MONGO_DB_DRIVER)
-    .then(() => {
-        //app.listen(process.env.PORT || 3000, () => console.log("Server is runing!"))
-        https.createServer({
-            key: fs.readFileSync(path.join(__dirname, 'ssl', 'key.pem')),
-            cert: fs.readFileSync(path.join(__dirname, 'ssl', 'cert.pem'))
-        }, app)
-            .listen(process.env.PORT || 3000, () => console.log("Server is runing!"));
-    })
-    .catch(err => console.log(err, 'db connection'));
+module.exports = app;
