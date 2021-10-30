@@ -139,5 +139,6 @@ module.exports = {
     stripe: {
         pk: process.env.STRIPE_PK,
         sk: process.env.STRIPE_SK
-    }
+    },
+    MONGO_DB_DRIVER: `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.buupe.mongodb.net/${process.env.DATABASE}`
 }
