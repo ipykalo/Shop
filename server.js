@@ -35,7 +35,9 @@ app.set('view engine', 'pug');
 app.set('views', 'views');
 
 //Helmet helps to secure Express apps by setting various HTTP headers.
-app.use(helmet());
+//If the helmet middleware is enabled then it block some scripts on client side, disabled for now
+//app.use(helmet());
+
 // The middleware will attempt to compress response bodies for all request that traverse through the middleware, based on the given options.
 app.use(compression());
 
@@ -115,12 +117,5 @@ app.use((error, req, res, next) => {
 });
 
 mongoose.connect(config.MONGO_DB_DRIVER)
-    .then(() => {
-        app.listen(process.env.PORT || 3000, () => console.log("Server is runing!"))
-        // https.createServer({
-        //     key: fs.readFileSync(path.join(__dirname, 'ssl', 'key.pem')),
-        //     cert: fs.readFileSync(path.join(__dirname, 'ssl', 'cert.pem'))
-        // }, app)
-        //     .listen(process.env.PORT || 3000, () => console.log(`Server is runing on the port: ${process.env.PORT}`));
-    })
+    .then(() => app.listen(process.env.PORT || 3000, () => console.log("Server is runing!")))
     .catch(err => console.log(err, 'db connection'));
