@@ -1,5 +1,6 @@
 # Shop
 Technologies: NodeJS, Express, MongoDB, Mongoose
+The server renders HTML pages by Pug.js library
 
 This App uses stripe payment system.
 To test payment flow use test credit cards: 
