@@ -17,7 +17,7 @@ block content
                             p.product__description #{product.description}
                         div.card__actions
                             a.btn(href=`${config.routes.ADMIN_EDIT_PRODUCT}/${product._id}`) Edit
-                            a.btn(onclick=`onDeleteProduct('${product._id}', '${config.routes.ADMIN_DELETE_PRODUCT}', '${scrfToken}')`) Delete
+                            a.btn(id="deleteProduct", productId=`${product._id}` csrfToken=`${scrfToken}`) Delete
         else 
             h1 No Products!
 block scripts

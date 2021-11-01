@@ -1,8 +1,11 @@
-const onDeleteProduct = (id, route, csrfToken) => {
-    if (!id || !route) {
-        return;
-    }
-    fetch(`${route}/${id}`, {
+
+const btn = document.getElementById('deleteProduct');
+
+btn?.addEventListener('click', () => {
+    const id = btn.getAttribute('productId');
+    const csrfToken = btn.getAttribute('csrfToken');
+
+    fetch(`/admin/delete-product/${id}`, {
         method: 'DELETE',
         headers: {
             'csrf-token': csrfToken
@@ -13,4 +16,4 @@ const onDeleteProduct = (id, route, csrfToken) => {
                 document.getElementById(id)?.remove();
             }
         });
-}
+})
