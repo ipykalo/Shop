@@ -1,5 +1,5 @@
 # Shop
-NodeJs App
+Technologies: NodeJS, Express, MongoDB, Mongoose
 
 This App uses stripe payment system.
 To test payment flow use test credit cards: 
