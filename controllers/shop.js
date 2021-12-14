@@ -1,7 +1,7 @@
 const fs = require('fs');
 const pdfkit = require('pdfkit');
 
-const config = require('../config');
+const config = require('../configs/config');
 const Product = require('../models/product');
 const Order = require('../models/order');
 const helper = require('../util/helper');

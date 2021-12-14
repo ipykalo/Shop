@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
-const config = require('../config');
+const config = require('../configs/config');
 const User = require('../models/user');
 const helper = require('../util/helper');
 const { validationResult } = require('express-validator');

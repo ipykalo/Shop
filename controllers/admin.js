@@ -1,4 +1,4 @@
-const config = require('../config');
+const config = require('../configs/config');
 const { validationResult } = require('express-validator');
 const Product = require('../models/product');
 const Order = require('../models/order');

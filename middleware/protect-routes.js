@@ -1,4 +1,4 @@
-const config = require('../config');
+const config = require('../configs/config');
 
 module.exports = (req, res, next) => {
     if (!req.session.isLoggedIn) {

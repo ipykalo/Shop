@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const shopController = require('../controllers/shop');
-const routes = require('../config')?.routes;
+const routes = require('../configs/config')?.routes;
 const protectRoutes = require('../middleware/protect-routes');
 
 router.get(routes.INDEX, shopController.getIndex);

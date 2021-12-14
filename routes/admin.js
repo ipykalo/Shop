@@ -3,7 +3,7 @@ const router = express.Router();
 const { body } = require('express-validator');
 
 const adminController = require('../controllers/admin');
-const routes = require('../config')?.routes;
+const routes = require('../configs/config')?.routes;
 const protectRoutes = require('../middleware/protect-routes');
 const helper = require('../util/helper');
 

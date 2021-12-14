@@ -6,16 +6,22 @@ const flash = require('connect-flash');
 const multer = require('multer');
 const helmet = require('helmet');
 const compression = require('compression');
-const config = require('./config');
+const config = require('./configs/config');
+const config_db = require('./configs/db.config');
 
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const mongoose = require('mongoose');
 
+//Load Environment variables from .env
+require('dotenv').config();
+
+console.log(process.env.USER)
+
 const app = express();
 const store = new MongoDbStore({
-    uri: config.MONGO_DB_DRIVER,
+    uri: config_db.url,
     collection: 'sessions'
 });
 
@@ -116,6 +122,6 @@ app.use((error, req, res, next) => {
     });
 });
 
-mongoose.connect(config.MONGO_DB_DRIVER)
+mongoose.connect(config_db.url)
     .then(() => app.listen(process.env.PORT || 3000, () => console.log("Server is runing!")))
     .catch(err => console.log(err, 'db connection'));

@@ -1,4 +1,4 @@
-const config = require('../config');
+const config = require('../configs/config');
 
 exports.getNoteFoundPage = (req, res) => {
     res.status(404)
