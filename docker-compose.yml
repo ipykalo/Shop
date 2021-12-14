@@ -1,6 +1,18 @@
 version: '3.8'
 services:
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: $USER
+      MONGO_INITDB_ROOT_PASSWORD: $PASSWORD
   app:
+    depends_on:
+      - mongo
+    env_file:
+      - .env  
     build: .
     ports:
       - "3000:3000"
